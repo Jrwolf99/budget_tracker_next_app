@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <section className="min-h-screen bg-gray-100">
-          <header className="bg-blue-600 text-white py-6 px-4 shadow-md">
+          <header className="bg-primaryDark text-white py-6 px-4 shadow-md">
             <h1 className="text-3xl font-semibold">Budget Tracker</h1>
           </header>
 
@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
               <li>
                 <Link
                   href="/dashboard"
-                  className="text-gray-800 hover:text-blue-600"
+                  className="text-gray-800 hover:text-primary"
                 >
                   Dashboard
                 </Link>
@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
               <li>
                 <Link
                   href="/transactions"
-                  className="text-gray-800 hover:text-blue-600"
+                  className="text-gray-800 hover:text-primaryHover"
                 >
                   Transactions
                 </Link>
@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
               <li>
                 <Link
                   href="/information"
-                  className="text-gray-800 hover:text-blue-600"
+                  className="text-gray-800 hover:text-primaryHover"
                 >
                   Information
                 </Link>

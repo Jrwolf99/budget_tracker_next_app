@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-function usePut(endpoint, body) {
+function usePut(endpoint) {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const putData = async () => {
+  const putData = async (body) => {
     setIsLoading(true);
     try {
       const res = await fetch(
@@ -29,7 +29,7 @@ function usePut(endpoint, body) {
     }
   };
 
-  return [putData, { response, error, isLoading }];
+  return { putData, response, error, isLoading };
 }
 
 export default usePut;
