@@ -1,10 +1,9 @@
 'use client';
-
 import React, { useState } from 'react';
-import HorizontalChart from './components/HorizontalChart';
-import PieChartComponent from './components/PieChart';
+import HorizontalChart from '../components/HorizontalChart';
+import PieChartComponent from '../components/PieChart';
 
-export default function DashboardPage() {
+export default function GraphsPage() {
   const [data, setData] = useState([
     {
       category_name: 'Food',

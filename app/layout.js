@@ -1,6 +1,6 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
-import Link from 'next/link';
+import Header from './components/Header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,42 +13,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <section className="min-h-screen bg-gray-100">
-          <header className="bg-primaryDark text-white py-6 px-4 shadow-md">
-            <h1 className="text-3xl font-semibold">Budget Tracker</h1>
-          </header>
-
-          <nav className="bg-white shadow-md py-4 px-6">
-            <ul className="flex space-x-4">
-              <li>
-                <Link
-                  href="/dashboard"
-                  className="text-gray-800 hover:text-primary"
-                >
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/transactions"
-                  className="text-gray-800 hover:text-primaryHover"
-                >
-                  Transactions
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/information"
-                  className="text-gray-800 hover:text-primaryHover"
-                >
-                  Information
-                </Link>
-              </li>
-            </ul>
-          </nav>
-
-          <main className="p-6">{children}</main>
-        </section>
+        <Header />
+        <section className="min-h-screen bg-gray-100">{children}</section>
       </body>
     </html>
   );
