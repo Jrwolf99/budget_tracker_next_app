@@ -8,19 +8,14 @@ import {
   Legend,
 } from 'recharts';
 
-const HorizontalChart = ({ dataKey, width, height, graph_data }) => {
+const HorizontalChart = ({ width, height, graph_data }) => {
   return (
-    <BarChart data={graph_data} width={width} height={height} layout="vertical">
-      <CartesianGrid strokeDasharray="3 3" />
+    <BarChart width={width} height={height} data={graph_data} layout="vertical">
+      <CartesianGrid strokeDasharray="5 0" />
       <XAxis type="number" />
       <YAxis type="category" dataKey="name" tick={{ fontSize: 12 }} />
       <Tooltip />
-      <Legend
-        formatter={(value) => (
-          <span className="text-green-700">{value}</span> // Apply Tailwind CSS color class
-        )}
-      />{' '}
-      <Bar dataKey={dataKey} fill="#56d64f" />
+      <Bar dataKey="value" fill="#4DBD3D" />
     </BarChart>
   );
 };

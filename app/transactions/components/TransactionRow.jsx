@@ -5,37 +5,24 @@ import InputWithTimer from './InputWithTimer';
 import usePut from '@/app/utility_hooks/usePut';
 import useGet from '@/app/utility_hooks/useGet';
 import Select from 'react-select';
-export default function TransactionRow({ transaction }) {
+export default function TransactionRow({ transaction, listOfCategories }) {
   const { formatDate } = useFormat();
 
-  const { putData: updateRowNotes } = usePut('/transactions/update_row_notes');
-  const { putData: updateRowCategory } = usePut(
-    '/transactions/update_row_category'
-  );
-  const { data: listOfCategories, loading } = useGet('/categories');
+  const { putData: updateRowNotes } = usePut('/transactions/set_notes');
+  const { putData: updateRowCategory } = usePut('/transactions/set_category');
 
   const [notes, setNotes] = useState(transaction.notes);
   const [options, setOptions] = useState();
   const [selectedOption, setSelectedOption] = useState();
 
   useEffect(() => {
-    if (!loading) {
-      setOptions(
-        listOfCategories.map((category) => ({
-          value: category.category_name,
-          label: category.category_name,
-        }))
-      );
-    }
-  }, [loading, listOfCategories]);
-
-  const handleCategorySelectChange = (selectedOption) => {
-    updateRowCategory({
-      id: transaction.id,
-      category: selectedOption.label,
-    });
-    setSelectedOption(selectedOption);
-  };
+    setOptions(
+      listOfCategories?.map((category) => ({
+        value: category.id,
+        label: category.category_name,
+      }))
+    );
+  }, [listOfCategories]);
 
   return (
     <>
@@ -56,10 +43,20 @@ export default function TransactionRow({ transaction }) {
       <td className="px-4 py-2">
         <Select
           name="colors"
+          defaultValue={{
+            value: transaction.category_id,
+            label: transaction.category_name,
+          }}
           options={options}
           className="text-sm min-w-[200px]"
           classNamePrefix="select"
-          onChange={handleCategorySelectChange}
+          onChange={(selectedOption) => {
+            updateRowCategory({
+              id: transaction.id,
+              category_id: selectedOption.value,
+            });
+            setSelectedOption(selectedOption);
+          }}
           value={selectedOption}
         />
       </td>

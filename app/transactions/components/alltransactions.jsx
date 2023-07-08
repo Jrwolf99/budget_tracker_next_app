@@ -5,16 +5,13 @@ import TransactionRow from './TransactionRow';
 import useGet from '../../utility_hooks/useGet';
 
 const AllTransactions = () => {
-  const [month, setMonth] = useLocalStorage('selectedMonth');
-  const [year, setYear] = useLocalStorage('selectedYear');
+  const [month] = useLocalStorage('selectedMonth');
+  const [year] = useLocalStorage('selectedYear');
 
-  const { data } = useGet(`/transactions?month=${month}&year=${year}`);
-
-  const [transactions, setTransactions] = useState(null);
-
-  useEffect(() => {
-    setTransactions(data);
-  }, [data]);
+  const { data: transactions } = useGet(
+    `/transactions?month=${month}&year=${year}`
+  );
+  const { data: listOfCategories } = useGet('/categories');
 
   return (
     <div className="p-8 mx-8 shadow-lg rounded-lg bg-white overflow-x-auto">
@@ -31,7 +28,10 @@ const AllTransactions = () => {
         <tbody>
           {transactions?.map((transaction, index) => (
             <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
-              <TransactionRow transaction={transaction} />
+              <TransactionRow
+                listOfCategories={listOfCategories}
+                transaction={transaction}
+              />
             </tr>
           ))}
         </tbody>

@@ -9,9 +9,7 @@ const useLocalStorage = (key, initialValue = null) => {
   const [storedValue, setStoredValueState] = useState(readValue);
 
   const setStoredValue = (newValue) => {
-    // Save state
     setStoredValueState(newValue);
-    // Save to local storage
     window.localStorage.setItem(key, JSON.stringify(newValue));
   };
 

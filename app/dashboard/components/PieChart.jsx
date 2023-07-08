@@ -1,35 +1,86 @@
+import useFormat from '@/app/utility_hooks/useFormat';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
-const data = [
-  { category: 'Category 1', value: 25 },
-  { category: 'Category 2', value: 50 },
-  { category: 'Category 3', value: 30 },
-  // Add more categories as needed
-];
+const renderCustomizedLegend = ({ payload }) => {
+  const formatDollar = (dollarAmount) => {
+    let dollar = dollarAmount.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
+    return dollar;
+  };
 
-const PieChartComponent = () => {
-  const sortedData = data.sort((a, b) => a.amount - b.amount);
+  return (
+    <div className="rounded-md shadow-lg overflow-hidden">
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            ></th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Category
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Value
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {payload.map((entry, index) => (
+            <tr key={`item-${index}`}>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span style={{ color: entry.color }}>■</span>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">{entry.value}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {formatDollar(entry.payload.value)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+const PieChartComponent = ({ data }) => {
+  console.log(data);
+
+  const sortedData = data.sort((a, b) => a.value - b.value);
 
   const colorScale = [
-    '#A2E9B7', // Lightest shade
+    '#A2E9B7',
     '#7EDC91',
     '#59CF6B',
     '#43C455',
     '#32B94A',
-    '#24A638', // Darkest shade
+    '#24A638',
+    '#1D8C2B',
+    '#177324',
+    '#0F5B1A',
+    '#0A3F12',
   ];
+
   return (
-    <PieChart width={400} height={300}>
+    <PieChart width={400} height={800} className="">
       <Pie
-        data={data}
+        data={sortedData}
         dataKey="value"
         nameKey="category"
         cx="50%"
         cy="50%"
-        innerRadius={60} // Adjust the inner radius for the ring shape
-        outerRadius={80} // Adjust the outer radius for the ring shape
+        innerRadius={60}
+        outerRadius={110}
       >
-        {data.map((entry, index) => (
+        {sortedData.map((entry, index) => (
           <Cell
             key={`cell-${index}`}
             fill={colorScale[index % colorScale.length]}
@@ -37,11 +88,7 @@ const PieChartComponent = () => {
         ))}
       </Pie>
       <Tooltip />
-      <Legend
-        formatter={(value) => (
-          <span className="text-green-700">{value}</span> // Apply Tailwind CSS color class
-        )}
-      />
+      <Legend content={renderCustomizedLegend} />
     </PieChart>
   );
 };

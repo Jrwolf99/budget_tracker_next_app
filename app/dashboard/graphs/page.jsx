@@ -1,37 +1,32 @@
 'use client';
+import useGet from '@/app/utility_hooks/useGet';
+import useLocalStorage from '@/app/utility_hooks/useLocalStorage';
 import React, { useState } from 'react';
 import HorizontalChart from '../components/HorizontalChart';
 import PieChartComponent from '../components/PieChart';
 
 export default function GraphsPage() {
-  const [data, setData] = useState([
-    {
-      category_name: 'Food',
-      graph_data: [
-        { name: 'Target', amount: 200 },
-        { name: 'Actual', amount: 250 },
-      ],
-    },
-    {
-      category_name: 'Goods',
-      graph_data: [
-        { name: 'Target', amount: 100 },
-        { name: 'Actual', amount: 150 },
-      ],
-    },
-  ]);
+  const [month] = useLocalStorage('selectedMonth');
+  const [year] = useLocalStorage('selectedYear');
+
+  const { data: totalsByCategory } = useGet(
+    `/transactions/get_totals_by_category?month=${month}&year=${year}`
+  );
 
   return (
     <div className="flex justify-center gap-10">
       <div className="p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
-        {data.map((category, index) => (
+        {totalsByCategory?.map((category, index) => (
           <div key={index} className="mb-[70px]">
-            <h2 className="mb-4">{category.category_name}</h2>
+            <h2 className="mb-4">{category.category}</h2>
             <HorizontalChart
-              graph_data={category.graph_data}
-              dataKey={'amount'}
+              graph_data={[
+                { name: 'Target', value: category.goal },
+                { name: 'Actual', value: category.value },
+              ]}
+              dataKeys={['actual', 'target']}
               width={400}
-              height={175}
+              height={275}
             />
           </div>
         ))}
@@ -39,7 +34,7 @@ export default function GraphsPage() {
 
       <div className="p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
         <h2 className="m-4">Expenses</h2>
-        <PieChartComponent />
+        {totalsByCategory && <PieChartComponent data={totalsByCategory} />}
       </div>
     </div>
   );

@@ -26,7 +26,33 @@ function useFormat(dateString) {
     return formattedDate;
   };
 
-  return { formatDate };
+  const monthIntToString = (monthInt) => {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+
+    return months[monthInt - 1];
+  };
+
+  const formatDollar = (dollarAmount) => {
+    return dollarAmount.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    });
+  };
+
+  return { formatDate, monthIntToString, formatDollar };
 }
 
 export default useFormat;
