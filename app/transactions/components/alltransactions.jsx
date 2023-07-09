@@ -25,6 +25,7 @@ const AllTransactions = () => {
     if (listOfCategories) {
       setMyCategories([
         { value: 'all', label: 'All' },
+        { value: 'uncategorized', label: 'Uncategorized' },
         ...listOfCategories.map((category) => ({
           value: category.id,
           label: category.category_name,
@@ -65,19 +66,54 @@ const AllTransactions = () => {
           </tr>
         </thead>
         <tbody>
-          {myTransactions?.map((transaction, index) => {
-            {
-              console.log(transaction);
-            }
-            return (
-              <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
-                <TransactionRow
-                  listOfCategories={listOfCategories}
-                  transaction={transaction}
-                />
-              </tr>
-            );
-          })}
+          <tr>
+            <td className="px-4 py-2">
+              <strong>Total Expenses</strong>
+            </td>
+            <td className="px-4 py-2"></td>
+            <td className="px-4 py-2">
+              <strong>
+                {myTransactions
+                  ?.reduce((acc, curr) => {
+                    if (
+                      category === 'all' &&
+                      (curr.category_id === 11 ||
+                        curr.category_id === 12 ||
+                        curr.category_id === 8 ||
+                        curr.category_id === 5)
+                    )
+                      return acc;
+                    else return acc + parseFloat(curr.amount);
+                  }, 0)
+                  .toFixed(2)}
+              </strong>
+            </td>
+            <td className="px-4 py-2"></td>
+            <td className="px-4 py-2"></td>
+          </tr>
+
+          {myTransactions?.toString() !== '' ? (
+            myTransactions?.map((transaction, index) => {
+              console.log('DISPLAYING TRANSACTIONS');
+              return (
+                <tr
+                  key={index}
+                  className={index % 2 === 0 ? 'bg-gray-100' : ''}
+                >
+                  <TransactionRow
+                    listOfCategories={listOfCategories}
+                    transaction={transaction}
+                  />
+                </tr>
+              );
+            })
+          ) : (
+            <tr className="bg-gray-100">
+              <td className="px-4 py-2 text-center" colSpan="5">
+                No transactions found
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
