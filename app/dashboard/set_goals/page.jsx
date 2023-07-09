@@ -49,7 +49,7 @@ export default function SetGoalsPage() {
         onSubmit={handleGoalsSubmit}
         className="flex flex-col justify-center items-center gap-8"
       >
-        <div className="grid grid-cols-2 gap-8">
+        <div className="flex flex-wrap gap-8">
           {listOfCategories?.map((category) => (
             <div
               key={category.id}

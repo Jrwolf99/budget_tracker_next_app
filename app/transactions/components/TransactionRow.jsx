@@ -24,6 +24,14 @@ export default function TransactionRow({ transaction, listOfCategories }) {
     );
   }, [listOfCategories]);
 
+  useEffect(() => {
+    setSelectedOption({
+      value: transaction.category_id,
+      label: transaction.category_name,
+    });
+    setNotes(transaction.notes);
+  }, [transaction]);
+
   return (
     <>
       <td className="px-4 py-2 text-sm">{transaction.description}</td>

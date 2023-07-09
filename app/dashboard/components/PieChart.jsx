@@ -11,40 +11,63 @@ const renderCustomizedLegend = ({ payload }) => {
   };
 
   return (
-    <div className="rounded-md shadow-lg overflow-hidden">
-      <table className="min-w-full divide-y divide-gray-200">
+    <div className="rounded-md shadow-lg mt-4 overflow-hidden text-sm">
+      <table className="divide-gray-200 table-auto min-w-full">
         <thead className="bg-gray-50">
           <tr>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             ></th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               Category
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Value
+              Expense
+            </th>
+            <th
+              scope="col"
+              className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Percentage of Total
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="min-w-full bg-white divide-y divide-gray-200">
           {payload.map((entry, index) => (
             <tr key={`item-${index}`}>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-1 py-2 whitespace-nowrap">
                 <span style={{ color: entry.color }}>■</span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">{entry.value}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-1 py-2 whitespace-nowrap">{entry.value}</td>
+              <td className="px-1 py-2 whitespace-nowrap">
                 {formatDollar(entry.payload.value)}
+              </td>
+              <td className="px-1 py-2 whitespace-nowrap">
+                {entry.payload.percentage}%
               </td>
             </tr>
           ))}
+          <tr>
+            <td className="px-1 py-2 whitespace-nowrap"></td>
+            <td className="px-1 py-2 whitespace-nowrap text-left">
+              <strong>Total Expenses</strong>
+            </td>
+            <td className="px-1 py-2 whitespace-nowrap">
+              <strong>
+                {formatDollar(
+                  payload.reduce((acc, curr) => acc + curr.payload.value, 0)
+                )}
+              </strong>
+            </td>
+            <td className="px-1 py-2 whitespace-nowrap"></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -70,15 +93,15 @@ const PieChartComponent = ({ data }) => {
   ];
 
   return (
-    <PieChart width={400} height={800} className="">
+    <PieChart width={500} height={610}>
       <Pie
         data={sortedData}
         dataKey="value"
         nameKey="category"
         cx="50%"
         cy="50%"
-        innerRadius={60}
-        outerRadius={110}
+        innerRadius={35}
+        outerRadius={80}
       >
         {sortedData.map((entry, index) => (
           <Cell

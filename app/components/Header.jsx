@@ -27,7 +27,7 @@ export default function Header() {
           selectedYear={selectedYear}
         />
       </header>
-      <nav className="bg-white font-bold shadow-md py-4 px-6">
+      <nav className="bg-white font-bold shadow-md py-2 text-sm px-6">
         <ul className="flex space-x-4">
           <li>
             <Link

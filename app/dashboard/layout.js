@@ -4,7 +4,7 @@ import React from 'react';
 export default function DashboardLayout({ children }) {
   return (
     <>
-      <nav className="bg-[#f6f6f6] shadow-sm py-4 px-6 mb-3">
+      <nav className="bg-[#f6f6f6] shadow-sm py-2 text-sm px-6 mb-3">
         <ul className="flex space-x-4">
           <li>
             <Link

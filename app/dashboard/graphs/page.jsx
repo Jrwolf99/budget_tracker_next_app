@@ -14,10 +14,10 @@ export default function GraphsPage() {
   );
 
   return (
-    <div className="flex justify-center gap-10">
-      <div className="p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
+    <div className="flex justify-center gap-4 px-4">
+      <div className="flex-1 flex flex-wrap p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
         {totalsByCategory?.map((category, index) => (
-          <div key={index} className="mb-[70px]">
+          <div key={index} className="mb-[60px]">
             <h2 className="mb-4">{category.category}</h2>
             <HorizontalChart
               graph_data={[
@@ -25,15 +25,15 @@ export default function GraphsPage() {
                 { name: 'Actual', value: category.value },
               ]}
               dataKeys={['actual', 'target']}
-              width={400}
-              height={275}
+              width={250}
+              height={170}
             />
           </div>
         ))}
       </div>
 
-      <div className="p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
-        <h2 className="m-4">Expenses</h2>
+      <div className=" flex-3 p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
+        <h2 className="m-2">Expenses</h2>
         {totalsByCategory && <PieChartComponent data={totalsByCategory} />}
       </div>
     </div>
