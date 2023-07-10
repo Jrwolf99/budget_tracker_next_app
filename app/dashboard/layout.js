@@ -8,6 +8,15 @@ export default function DashboardLayout({ children }) {
         <ul className="flex space-x-4">
           <li>
             <Link
+              href="/dashboard/overview"
+              className="text-gray-800 hover:text-primaryHover"
+            >
+              Overview
+            </Link>
+          </li>
+
+          <li>
+            <Link
               href="/dashboard/graphs"
               className="text-gray-800 hover:text-primaryHover"
             >

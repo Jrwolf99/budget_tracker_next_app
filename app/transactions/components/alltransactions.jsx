@@ -47,7 +47,19 @@ const AllTransactions = () => {
           <tr>
             <th className="px-4 py-2">Description</th>
             <th className="px-4 py-2">Notes</th>
-            <th className="px-4 py-2">Amount</th>
+            <th className="px-4 py-2">
+              <button
+                className="text-sm flex-1"
+                onClick={() => {
+                  const sorted = myTransactions.sort((a, b) => {
+                    return a.amount - b.amount;
+                  });
+                  setMyTransactions([...sorted]);
+                }}
+              >
+                Amount
+              </button>
+            </th>
             <th className="px-4 py-2 flex gap-4 items-center">
               Category
               <Select
@@ -62,7 +74,22 @@ const AllTransactions = () => {
                 value={selectedCategory}
               />
             </th>
-            <th className="px-4 py-2">Date of Transaction</th>
+            <th className="px-4 py-2">
+              <button
+                className="text-sm flex-1"
+                onClick={() => {
+                  const sorted = myTransactions.sort((a, b) => {
+                    return (
+                      new Date(b.transaction_date) -
+                      new Date(a.transaction_date)
+                    );
+                  });
+                  setMyTransactions([...sorted]);
+                }}
+              >
+                Date of Transaction
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -94,7 +121,6 @@ const AllTransactions = () => {
 
           {myTransactions?.toString() !== '' ? (
             myTransactions?.map((transaction, index) => {
-              console.log('DISPLAYING TRANSACTIONS');
               return (
                 <tr
                   key={index}

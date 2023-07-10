@@ -1,4 +1,5 @@
 'use client';
+import useFormat from '@/app/utility_hooks/useFormat';
 import useGet from '@/app/utility_hooks/useGet';
 import useLocalStorage from '@/app/utility_hooks/useLocalStorage';
 import React, { useState } from 'react';
@@ -8,6 +9,8 @@ import PieChartComponent from '../components/PieChart';
 export default function GraphsPage() {
   const [month] = useLocalStorage('selectedMonth');
   const [year] = useLocalStorage('selectedYear');
+
+  const { monthIntToString } = useFormat();
 
   const { data: totalsByCategory } = useGet(
     `/transactions/get_totals_by_category?month=${month}&year=${year}`
@@ -33,7 +36,7 @@ export default function GraphsPage() {
       </div>
 
       <div className=" flex-3 p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
-        <h2 className="m-2">Expenses</h2>
+        <h2 className="m-2 font-bold">{monthIntToString(month)} Expenses</h2>
         {totalsByCategory && <PieChartComponent data={totalsByCategory} />}
       </div>
     </div>

@@ -45,14 +45,6 @@ export default function Header() {
               Transactions
             </Link>
           </li>
-          <li>
-            <Link
-              href="/information"
-              className="text-gray-800 hover:text-primaryHover"
-            >
-              Information
-            </Link>
-          </li>
         </ul>
       </nav>
     </div>

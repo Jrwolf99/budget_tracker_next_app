@@ -9,12 +9,11 @@ function useGet(endpoint) {
     const fetchData = async () => {
       setLoading(true);
       try {
-        console.log('endpoint', endpoint);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}${endpoint}`
         );
-        const json = await res.json();
 
+        const json = await res.json();
         if (!res.ok) throw Error(json.message || 'Unexpected error');
 
         setData(json);

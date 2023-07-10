@@ -1,4 +1,3 @@
-import useFormat from '@/app/utility_hooks/useFormat';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
 const renderCustomizedLegend = ({ payload }) => {
@@ -11,7 +10,7 @@ const renderCustomizedLegend = ({ payload }) => {
   };
 
   return (
-    <div className="rounded-md shadow-lg mt-4 overflow-hidden text-sm">
+    <div className="rounded-md shadow-lg mt-4 overflow-hidden text-sm bg-red-400">
       <table className="divide-gray-200 table-auto min-w-full">
         <thead className="bg-gray-50">
           <tr>
@@ -40,20 +39,6 @@ const renderCustomizedLegend = ({ payload }) => {
           </tr>
         </thead>
         <tbody className="min-w-full bg-white divide-y divide-gray-200">
-          {payload.map((entry, index) => (
-            <tr key={`item-${index}`}>
-              <td className="px-1 py-2 whitespace-nowrap">
-                <span style={{ color: entry.color }}>■</span>
-              </td>
-              <td className="px-1 py-2 whitespace-nowrap">{entry.value}</td>
-              <td className="px-1 py-2 whitespace-nowrap">
-                {formatDollar(entry.payload.value)}
-              </td>
-              <td className="px-1 py-2 whitespace-nowrap">
-                {entry.payload.percentage}%
-              </td>
-            </tr>
-          ))}
           <tr>
             <td className="px-1 py-2 whitespace-nowrap"></td>
             <td className="px-1 py-2 whitespace-nowrap text-left">
@@ -68,32 +53,70 @@ const renderCustomizedLegend = ({ payload }) => {
             </td>
             <td className="px-1 py-2 whitespace-nowrap"></td>
           </tr>
+          {payload.map((entry, index) => (
+            <tr key={`item-${index}`}>
+              <td className="px-1 py-2 whitespace-nowrap">
+                <span style={{ color: entry.color }}>■</span>
+              </td>
+              <td className="px-1 py-2 whitespace-nowrap">{entry.value}</td>
+              <td className="px-1 py-2 whitespace-nowrap">
+                {formatDollar(entry.payload.value)}
+              </td>
+              <td className="px-1 py-2 whitespace-nowrap">
+                {entry.payload.percentage}%
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
   );
 };
 
-const PieChartComponent = ({ data }) => {
-  console.log(data);
+const renderCustomizedLabel = ({
+  cx,
+  cy,
+  midAngle,
+  outerRadius,
+  percent,
+  name,
+}) => {
+  const RADIAN = Math.PI / 180;
+  const radius = outerRadius + 10;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const textAnchor = x > cx ? 'start' : 'end';
 
-  const sortedData = data.sort((a, b) => a.value - b.value);
+  return (
+    <text
+      x={x}
+      y={y}
+      fill="black"
+      textAnchor={textAnchor}
+      dominantBaseline="central"
+    >
+      {`${name}: ${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
+
+const PieChartComponent = ({ data }) => {
+  const sortedData = data.sort((a, b) => b.percentage - a.percentage);
 
   const colorScale = [
-    '#A2E9B7',
-    '#7EDC91',
-    '#59CF6B',
-    '#43C455',
-    '#32B94A',
     '#24A638',
-    '#1D8C2B',
-    '#177324',
-    '#0F5B1A',
-    '#0A3F12',
+    '#32B94A',
+    '#43C455',
+    '#59CF6B',
+    '#7EDC91',
+    '#A2E9B7',
+    '#C6F6DD',
+    '#EAF3F9',
   ];
 
   return (
-    <PieChart width={500} height={610}>
+    <PieChart width={500} height={560}>
+      <Legend content={renderCustomizedLegend} verticalAlign="top" />
       <Pie
         data={sortedData}
         dataKey="value"
@@ -102,6 +125,8 @@ const PieChartComponent = ({ data }) => {
         cy="50%"
         innerRadius={35}
         outerRadius={80}
+        label={renderCustomizedLabel}
+        labelLine={false}
       >
         {sortedData.map((entry, index) => (
           <Cell
@@ -111,7 +136,6 @@ const PieChartComponent = ({ data }) => {
         ))}
       </Pie>
       <Tooltip />
-      <Legend content={renderCustomizedLegend} />
     </PieChart>
   );
 };
