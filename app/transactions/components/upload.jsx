@@ -7,7 +7,9 @@ const UploadCSVBox = () => {
 
   const router = useRouter();
 
-  const { postDataFileUpload: postCSV } = usePost('/transactions/upload');
+  const { postDataFileUpload: postCSV, response: response } = usePost(
+    '/transactions/upload'
+  );
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -46,6 +48,9 @@ const UploadCSVBox = () => {
           Upload
         </button>
       </div>
+      {response && (
+        <div className="text-sm text-gray-600 mt-4">{response.message}</div>
+      )}
     </div>
   );
 };

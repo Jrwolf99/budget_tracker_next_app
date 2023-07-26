@@ -4,6 +4,8 @@ import { useState } from 'react';
 import TransactionRow from './TransactionRow';
 import useGet from '../../utility_hooks/useGet';
 import Select from 'react-select';
+import Tooltip from '@/app/components/ToolTip';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 const AllTransactions = () => {
   const [month] = useLocalStorage('selectedMonth');
@@ -48,17 +50,25 @@ const AllTransactions = () => {
             <th className="px-4 py-2">Description</th>
             <th className="px-4 py-2">Notes</th>
             <th className="px-4 py-2">
-              <button
-                className="text-sm flex-1"
-                onClick={() => {
-                  const sorted = myTransactions.sort((a, b) => {
-                    return a.amount - b.amount;
-                  });
-                  setMyTransactions([...sorted]);
-                }}
-              >
-                Amount
-              </button>
+              <div className="flex">
+                <button
+                  className="text-sm flex-1 inline"
+                  onClick={() => {
+                    const sorted = myTransactions.sort((a, b) => {
+                      return a.amount - b.amount;
+                    });
+                    setMyTransactions([...sorted]);
+                  }}
+                >
+                  Amount
+                </button>
+                <Tooltip
+                  className="inline"
+                  tooltipText="Amount is all categories except Income, Savings, Refunds, and Transfers"
+                >
+                  <InformationCircleIcon className="h-5 w-5 text-gray-500" />
+                </Tooltip>
+              </div>
             </th>
             <th className="px-4 py-2 flex gap-4 items-center">
               Category
