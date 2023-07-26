@@ -37,6 +37,7 @@ function DatePicker({
         }}
       >
         <option value="">Select Month</option>
+        <option value="all">Full Year</option>
         {months.map((month, index) => (
           <option key={index} value={index + 1}>
             {month}
