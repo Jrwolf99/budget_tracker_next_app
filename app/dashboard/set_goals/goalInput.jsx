@@ -11,6 +11,7 @@ export default function GoalInput({ category, myGoals, setMyGoals }) {
       {category.category_name}
       <input
         type="number"
+        placeholder="Goal Amount"
         value={myGoals[category.id] || ''}
         onChange={handleGoalAmountChange}
         className="border border-gray-300 rounded-md p-2 w-[300px]"
