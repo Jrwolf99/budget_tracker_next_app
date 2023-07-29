@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
 
-function useFormat(dateString) {
+function useFormat() {
+
+
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
   const formatDate = (dateString) => {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
 
     const dateParts = dateString.split('-');
     const year = parseInt(dateParts[0]);
@@ -27,21 +30,6 @@ function useFormat(dateString) {
   };
 
   const monthIntToString = (monthInt) => {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-
     return months[monthInt - 1];
   };
 
@@ -52,7 +40,7 @@ function useFormat(dateString) {
     });
   };
 
-  return { formatDate, monthIntToString, formatDollar };
+  return {months, formatDate, monthIntToString, formatDollar };
 }
 
 export default useFormat;

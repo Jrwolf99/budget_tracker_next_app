@@ -87,7 +87,7 @@ const renderCustomizedLabel = ({
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
   const textAnchor = x > cx ? 'start' : 'end';
 
-  return (
+  if ((percent * 100).toFixed(0) > 2) return (
     <text
       x={x}
       y={y}
@@ -97,7 +97,10 @@ const renderCustomizedLabel = ({
     >
       {`${name}: ${(percent * 100).toFixed(0)}%`}
     </text>
-  );
+  )
+  else return null;
+
+
 };
 
 const PieChartComponent = ({ data }) => {
@@ -115,7 +118,7 @@ const PieChartComponent = ({ data }) => {
   ];
 
   return (
-    <PieChart width={500} height={560}>
+    <PieChart width={500} height={700}>
       <Legend content={renderCustomizedLegend} verticalAlign="top" />
       <Pie
         data={sortedData}

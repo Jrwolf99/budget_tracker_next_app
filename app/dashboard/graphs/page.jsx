@@ -13,7 +13,7 @@ export default function GraphsPage() {
   const { monthIntToString } = useFormat();
 
   const { data: totalsByCategory } = useGet(
-    `/transactions/get_totals_by_category?month=${month}&year=${year}`
+    `/transactions/get_list_of_categories_with_monthly_expenses?month=${month}&year=${year}`
   );
 
   return (
@@ -33,8 +33,10 @@ export default function GraphsPage() {
             />
           </div>
         ))}
+        {!totalsByCategory?.length && (
+          <div className="text-center">No transactions recorded for this month.</div>
+        )}
       </div>
-
       <div className=" flex-3 p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
         <h2 className="m-2 font-bold">{monthIntToString(month)} Expenses</h2>
         {totalsByCategory && <PieChartComponent data={totalsByCategory} />}

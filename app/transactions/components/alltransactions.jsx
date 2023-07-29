@@ -14,7 +14,7 @@ const AllTransactions = () => {
   const [selectedCategory, setSelectedCategory] = useState();
 
   const { data: transactions } = useGet(
-    `/transactions?month=${month}&year=${year}&category_id=${category}`
+    `/transactions?month=${month}&year=${year}&category_identifier=${category}`
   );
 
   const [myTransactions, setMyTransactions] = useState(transactions);
@@ -29,7 +29,7 @@ const AllTransactions = () => {
         { value: 'all', label: 'All' },
         { value: 'uncategorized', label: 'Uncategorized' },
         ...listOfCategories.map((category) => ({
-          value: category.id,
+          value: category.identifier,
           label: category.category_name,
         })),
       ]);
