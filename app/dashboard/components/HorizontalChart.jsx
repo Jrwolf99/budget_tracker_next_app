@@ -23,9 +23,11 @@ const renderCustomizedLabel = (props) => {
     <text
       x={x + 5}
       y={y + height / 2}
-      fill="white"
+      fill="black"
+      fontSize="12px"
+      fontWeight="bold"
       textAnchor="start"
-      dominantBaseline="middle"
+      dominantBaseline="central"
     >
       {formatDollar(value)}
     </text>
@@ -35,8 +37,7 @@ const renderCustomizedLabel = (props) => {
 const HorizontalChart = ({ width, height, graph_data }) => {
   return (
     <BarChart width={width} height={height} data={graph_data} layout="vertical">
-      <CartesianGrid strokeDasharray="5 0" />
-      <XAxis type="number" />
+      <XAxis type="number" domain={[0, 'dataMax+100']} hide />
       <YAxis type="category" dataKey="name" tick={{ fontSize: 12 }} />
       <Tooltip />
       <Bar dataKey="value" fill="#4DBD3D">

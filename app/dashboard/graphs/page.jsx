@@ -17,10 +17,13 @@ export default function GraphsPage() {
   );
 
   return (
-    <div className="flex justify-center gap-4 px-4">
-      <div className="flex-1 flex flex-wrap p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
+    <div className="flex justify-center px-4">
+      <div className="flex-1 flex flex-wrap gap-4 p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
         {totalsByCategory?.map((category, index) => (
-          <div key={index} className="mb-[60px]">
+          <div
+            key={index}
+            className="mb-[60px] flex flex-col justify-start bg-gray-100 border border-green-400 rounded-lg p-4"
+          >
             <h2 className="mb-4">{category.category}</h2>
             <HorizontalChart
               graph_data={[
@@ -34,7 +37,9 @@ export default function GraphsPage() {
           </div>
         ))}
         {!totalsByCategory?.length && (
-          <div className="text-center">No transactions recorded for this month.</div>
+          <div className="text-center">
+            No transactions recorded for this month.
+          </div>
         )}
       </div>
       <div className=" flex-3 p-8 shadow-lg rounded-lg bg-white overflow-x-auto">

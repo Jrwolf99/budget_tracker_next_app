@@ -115,6 +115,7 @@ const PieChartComponent = ({ data }) => {
     '#A2E9B7',
     '#C6F6DD',
     '#EAF3F9',
+    '#F2F9FC',
   ];
 
   return (
