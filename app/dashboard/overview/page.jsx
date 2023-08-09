@@ -6,12 +6,11 @@ import React, { useState } from 'react';
 
 export default function OverviewPage() {
   const [year] = useLocalStorage('selectedYear');
-  const { months } = useFormat();
+  const { months, formatDollar } = useFormat();
 
-  // todo: figure out a way to best supply data from rails and display it here. I believe best way is to have an array of objects, where each object
-  // represents a month, and each object has the following keys: month, income, savings, expenses, profit_margin.
-  // so, one endpoint for everything. get_overview_for_year?year=2021
-
+  const { data: overview } = useGet(
+    `/transactions/get_overview_report?year=${year}`
+  );
   return (
     <div className="flex justify-center gap-4 px-4">
       <div className="flex-1 flex flex-wrap p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
@@ -31,12 +30,7 @@ export default function OverviewPage() {
               >
                 Income
               </th>
-              <th
-                scope="col"
-                className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
-                Savings
-              </th>
+
               <th
                 scope="col"
                 className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -47,18 +41,60 @@ export default function OverviewPage() {
                 scope="col"
                 className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Profit Margin
+                Savings or Profit (Income - Expenses)
+              </th>
+              <th
+                scope="col"
+                className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Profit Margin AKA Savings Percentage (Profit / Income)
               </th>
             </tr>
           </thead>
           <tbody className="min-w-full bg-white divide-y divide-gray-200">
-            <tr>
-              <td className="px-1 py-2 whitespace-nowrap">Jan</td>
-              <td className="px-1 py-2 whitespace-nowrap">222</td>
-              <td className="px-1 py-2 whitespace-nowrap">100</td>
-              <td className="px-1 py-2 whitespace-nowrap">333</td>
-              <td className="px-1 py-2 whitespace-nowrap">10%</td>
-            </tr>
+            {overview?.map((month) => (
+              <tr key={month.month}>
+                <td className="px-1 py-2 whitespace-nowrap">
+                  {month.month == 0 ? (
+                    <strong>Total</strong>
+                  ) : (
+                    months[month.month - 1]
+                  )}
+                </td>
+                <td className="px-1 py-2 whitespace-nowrap">
+                  {month.month == 0 ? (
+                    <strong>{formatDollar(month.total_income)}</strong>
+                  ) : (
+                    formatDollar(month.total_income)
+                  )}
+                </td>
+                <td className="px-1 py-2 whitespace-nowrap">
+                  {month.month == 0 ? (
+                    <strong>{formatDollar(month.total_expenses)}</strong>
+                  ) : (
+                    formatDollar(month.total_expenses)
+                  )}
+                </td>
+                <td className="px-1 py-2 whitespace-nowrap">
+                  {month.month == 0 ? (
+                    <strong>{formatDollar(month.total_profit)}</strong>
+                  ) : (
+                    formatDollar(month.total_profit)
+                  )}
+                </td>
+                {month.profit_margin ? (
+                  <td className="px-1 py-2 whitespace-nowrap">
+                    {month.month == 0 ? (
+                      <strong>{month.profit_margin}%</strong>
+                    ) : (
+                      month.profit_margin + '%'
+                    )}
+                  </td>
+                ) : (
+                  <td className="px-1 py-2 whitespace-nowrap" />
+                )}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
