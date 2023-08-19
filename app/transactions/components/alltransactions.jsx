@@ -8,24 +8,23 @@ import Tooltip from '@/app/components/ToolTip';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 const AllTransactions = () => {
+  const [myTransactions, setMyTransactions] = useState();
+
+  const [categoryOption, setCategoryOption] = useState();
+  const [categoryOptions, setCategoryOptions] = useState();
+
   const [month] = useLocalStorage('selectedMonth');
   const [year] = useLocalStorage('selectedYear');
-  const [category, setCategory] = useState('all');
-  const [selectedCategory, setSelectedCategory] = useState();
 
   const { data: transactions } = useGet(
-    `/transactions?month=${month}&year=${year}&category_identifier=${category}`
+    `/transactions?month=${month}&year=${year}&category_identifier=${categoryOption?.value}`
   );
-
-  const [myTransactions, setMyTransactions] = useState(transactions);
-
   const { data: listOfCategories, isLoading: categoriesAreLoading } =
     useGet('/categories');
-  const [myCategories, setMyCategories] = useState(listOfCategories);
 
   useEffect(() => {
     if (listOfCategories) {
-      setMyCategories([
+      setCategoryOptions([
         { value: 'all', label: 'All' },
         { value: 'uncategorized', label: 'Uncategorized' },
         ...listOfCategories.map((category) => ({
@@ -34,13 +33,20 @@ const AllTransactions = () => {
         })),
       ]);
     } else {
-      setMyCategories([{ value: 'all', label: 'All' }]);
+      setCategoryOptions([{ value: 'all', label: 'All' }]);
     }
-  }, [listOfCategories, setMyCategories]);
+  }, [listOfCategories, setCategoryOptions]);
 
   useEffect(() => {
     setMyTransactions(transactions);
   }, [transactions]);
+
+  const handleSort = () => {
+    const sorted = myTransactions.sort((a, b) => {
+      return new Date(b.transaction_date) - new Date(a.transaction_date);
+    });
+    setMyTransactions([...sorted]);
+  };
 
   return (
     <div className="p-8 mx-8 shadow-lg rounded-lg bg-white overflow-x-auto min-h-[500px]">
@@ -76,27 +82,19 @@ const AllTransactions = () => {
                 className="text-sm flex-1"
                 name="categories"
                 defaultValue={{ value: 'all', label: 'All' }}
-                options={myCategories}
+                options={categoryOptions}
                 onChange={(e) => {
-                  setSelectedCategory(e);
-                  setCategory(e.value);
+                  setCategoryOption(e);
+                  Router.push({
+                    pathname: '/transactions',
+                    query: { keyword: e.value },
+                  });
                 }}
-                value={selectedCategory}
+                value={categoryOption}
               />
             </th>
             <th className="px-4 py-2">
-              <button
-                className="text-sm flex-1"
-                onClick={() => {
-                  const sorted = myTransactions.sort((a, b) => {
-                    return (
-                      new Date(b.transaction_date) -
-                      new Date(a.transaction_date)
-                    );
-                  });
-                  setMyTransactions([...sorted]);
-                }}
-              >
+              <button className="text-sm flex-1" onClick={() => handleSort()}>
                 Date of Transaction
               </button>
             </th>
@@ -113,7 +111,7 @@ const AllTransactions = () => {
                 {myTransactions
                   ?.reduce((acc, curr) => {
                     if (
-                      category === 'all' &&
+                      categoryOption.value === 'all' &&
                       (curr.category_id === 11 ||
                         curr.category_id === 12 ||
                         curr.category_id === 8 ||
