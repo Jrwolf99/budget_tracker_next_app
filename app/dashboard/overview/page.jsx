@@ -1,11 +1,9 @@
 'use client';
 import useFormat from '@/app/utility_hooks/useFormat';
 import useGet from '@/app/utility_hooks/useGet';
-import useLocalStorage from '@/app/utility_hooks/useLocalStorage';
 import React, { useState } from 'react';
 
 export default function OverviewPage() {
-  const [year] = useLocalStorage('selectedYear');
   const { months, formatDollar } = useFormat();
 
   const { data: overview } = useGet(

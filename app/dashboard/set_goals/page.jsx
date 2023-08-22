@@ -2,15 +2,12 @@
 
 import useFormat from '@/app/utility_hooks/useFormat';
 import useGet from '@/app/utility_hooks/useGet';
-import useLocalStorage from '@/app/utility_hooks/useLocalStorage';
 import React, { useEffect, useState } from 'react';
 import usePost from '@/app/utility_hooks/usePost';
 import GoalInput from './goalInput';
 
 export default function SetGoalsPage() {
   const { data: listOfCategories } = useGet(`/categories`);
-  const [month] = useLocalStorage('selectedMonth');
-  const [year] = useLocalStorage('selectedYear');
   const { data: listOfGoals } = useGet(`/goals?month=${month}&year=${year}`);
   const { monthIntToString } = useFormat();
   const [myGoals, setMyGoals] = useState({});

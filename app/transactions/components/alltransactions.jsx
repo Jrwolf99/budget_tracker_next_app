@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import useLocalStorage from '@/app/utility_hooks/useLocalStorage';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import TransactionRow from './TransactionRow';
 import useGet from '../../utility_hooks/useGet';
@@ -8,45 +8,44 @@ import Tooltip from '@/app/components/ToolTip';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 const AllTransactions = () => {
-  const [myTransactions, setMyTransactions] = useState();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const [categoryOption, setCategoryOption] = useState();
-  const [categoryOptions, setCategoryOptions] = useState();
-
-  const [month] = useLocalStorage('selectedMonth');
-  const [year] = useLocalStorage('selectedYear');
+  const [month, setMonth] = useState(searchParams.get('month'));
+  const [year, setYear] = useState(searchParams.get('year'));
+  const [category_identifier, setCategoryIdentifier] = useState(
+    searchParams.get('category_identifier')
+  );
 
   const { data: transactions } = useGet(
-    `/transactions?month=${month}&year=${year}&category_identifier=${categoryOption?.value}`
+    `/transactions?month=${month}&year=${year}&category_identifier=${category_identifier}`
   );
+
   const { data: listOfCategories, isLoading: categoriesAreLoading } =
     useGet('/categories');
 
   useEffect(() => {
-    if (listOfCategories) {
-      setCategoryOptions([
-        { value: 'all', label: 'All' },
-        { value: 'uncategorized', label: 'Uncategorized' },
-        ...listOfCategories.map((category) => ({
-          value: category.identifier,
-          label: category.category_name,
-        })),
-      ]);
-    } else {
-      setCategoryOptions([{ value: 'all', label: 'All' }]);
+    const params = new URLSearchParams(searchParams);
+    if (month === null) {
+      params.set('month', new Date().getMonth() + 1);
     }
-  }, [listOfCategories, setCategoryOptions]);
+    if (year === null) {
+      params.set('year', new Date().getFullYear());
+    }
+    if (category_identifier === null) {
+      params.set('category_identifier', 'all');
+    }
+    router.replace(`${pathname}?${params}`);
+  }, []);
 
   useEffect(() => {
-    setMyTransactions(transactions);
-  }, [transactions]);
+    setMonth(searchParams.get('month'));
+    setYear(searchParams.get('year'));
+    setCategoryIdentifier(searchParams.get('category_identifier'));
+  }, [searchParams]);
 
-  const handleSort = () => {
-    const sorted = myTransactions.sort((a, b) => {
-      return new Date(b.transaction_date) - new Date(a.transaction_date);
-    });
-    setMyTransactions([...sorted]);
-  };
+  if (categoriesAreLoading) return <div>Loading...</div>;
 
   return (
     <div className="p-8 mx-8 shadow-lg rounded-lg bg-white overflow-x-auto min-h-[500px]">
@@ -57,17 +56,7 @@ const AllTransactions = () => {
             <th className="px-4 py-2">Notes</th>
             <th className="px-4 py-2">
               <div className="flex">
-                <button
-                  className="text-sm flex-1 inline"
-                  onClick={() => {
-                    const sorted = myTransactions.sort((a, b) => {
-                      return a.amount - b.amount;
-                    });
-                    setMyTransactions([...sorted]);
-                  }}
-                >
-                  Amount
-                </button>
+                <button className="text-sm flex-1 inline">Amount</button>
                 <Tooltip
                   className="inline"
                   tooltipText="Amount is all categories except Income, Savings, Refunds, and Transfers"
@@ -81,16 +70,28 @@ const AllTransactions = () => {
               <Select
                 className="text-sm flex-1"
                 name="categories"
-                defaultValue={{ value: 'all', label: 'All' }}
-                options={categoryOptions}
+                options={listOfCategories?.map((category) => {
+                  return {
+                    value: category.identifier,
+                    label: category.category_name,
+                  };
+                })}
                 onChange={(e) => {
-                  setCategoryOption(e);
-                  Router.push({
-                    pathname: '/transactions',
-                    query: { keyword: e.value },
-                  });
+                  const params = new URLSearchParams(searchParams);
+                  params.set('category_identifier', e.value);
+                  router.replace(`${pathname}?${params}`);
                 }}
-                value={categoryOption}
+                value={
+                  {
+                    value: category_identifier,
+                    label: listOfCategories?.find(
+                      (category) => category.identifier === category_identifier
+                    )?.category_name,
+                  } || {
+                    value: 'all',
+                    label: 'All',
+                  }
+                }
               />
             </th>
             <th className="px-4 py-2">
@@ -107,47 +108,21 @@ const AllTransactions = () => {
             </td>
             <td className="px-4 py-2"></td>
             <td className="px-4 py-2">
-              <strong>
-                {myTransactions
-                  ?.reduce((acc, curr) => {
-                    if (
-                      categoryOption.value === 'all' &&
-                      (curr.category_id === 11 ||
-                        curr.category_id === 12 ||
-                        curr.category_id === 8 ||
-                        curr.category_id === 5)
-                    )
-                      return acc;
-                    else return acc + parseFloat(curr.amount);
-                  }, 0)
-                  .toFixed(2)}
-              </strong>
+              <strong>get from backend</strong>
             </td>
             <td className="px-4 py-2"></td>
             <td className="px-4 py-2"></td>
           </tr>
-
-          {myTransactions?.toString() !== '' ? (
-            myTransactions?.map((transaction, index) => {
-              return (
-                <tr
-                  key={index}
-                  className={index % 2 === 0 ? 'bg-gray-100' : ''}
-                >
-                  <TransactionRow
-                    listOfCategories={listOfCategories}
-                    transaction={transaction}
-                  />
-                </tr>
-              );
-            })
-          ) : (
-            <tr className="bg-gray-100">
-              <td className="px-4 py-2 text-center" colSpan="5">
-                No transactions found
-              </td>
-            </tr>
-          )}
+          {transactions?.map((transaction, index) => {
+            return (
+              <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
+                <TransactionRow
+                  listOfCategories={listOfCategories}
+                  transaction={transaction}
+                />
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

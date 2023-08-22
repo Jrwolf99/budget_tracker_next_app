@@ -1,15 +1,11 @@
 'use client';
 import useFormat from '@/app/utility_hooks/useFormat';
 import useGet from '@/app/utility_hooks/useGet';
-import useLocalStorage from '@/app/utility_hooks/useLocalStorage';
 import React, { useState } from 'react';
 import HorizontalChart from '../components/HorizontalChart';
 import PieChartComponent from '../components/PieChart';
 
 export default function GraphsPage() {
-  const [month] = useLocalStorage('selectedMonth');
-  const [year] = useLocalStorage('selectedYear');
-
   const { monthIntToString } = useFormat();
 
   const { data: totalsByCategory } = useGet(

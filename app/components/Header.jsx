@@ -3,19 +3,9 @@
 import Link from 'next/link';
 
 import React, { useState, useEffect } from 'react';
-import useLocalStorage from '../utility_hooks/useLocalStorage';
 import DatePicker from './DatePicker';
 
 export default function Header() {
-  const [selectedMonth, storeSelectedMonth] = useLocalStorage(
-    'selectedMonth',
-    '1'
-  );
-  const [selectedYear, storeSelectedYear] = useLocalStorage(
-    'selectedYear',
-    '2023'
-  );
-
   return (
     <div>
       <header className="bg-primaryDark text-white py-6 px-4 shadow-md flex justify-between items-center">
