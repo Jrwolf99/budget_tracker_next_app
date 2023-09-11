@@ -3,7 +3,7 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: '/dashboard/graphs',
+        destination: '/login',
         permanent: true,
       },
     ];

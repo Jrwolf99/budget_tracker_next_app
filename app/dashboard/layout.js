@@ -1,17 +1,24 @@
+'use client';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
+import { isInNoHeaderList } from '../utility/common';
 
 export default function DashboardLayout({ children }) {
+  if (isInNoHeaderList(usePathname())) {
+    return null;
+  }
+
   return (
     <>
-      <nav className="bg-[#f6f6f6] shadow-sm py-2 text-sm px-6 mb-3">
+      <nav className="bg-[#f6f6f6] shadow-sm py-2 text-sm px-6">
         <ul className="flex space-x-4">
           <li>
             <Link
-              href="/dashboard/overview"
+              href="/dashboard/transactions?selected_identifier=all"
               className="text-gray-800 hover:text-primaryHover"
             >
-              Overview
+              Transactions
             </Link>
           </li>
 

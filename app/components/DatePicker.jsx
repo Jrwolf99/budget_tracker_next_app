@@ -1,12 +1,7 @@
 'use client';
 import React from 'react';
 
-function DatePicker({
-  selectedMonth,
-  storeSelectedMonth,
-  selectedYear,
-  storeSelectedYear,
-}) {
+function DatePicker({ month, setMonth, year, setYear, justYear }) {
   const months = [
     'January',
     'February',
@@ -28,35 +23,35 @@ function DatePicker({
 
   return (
     <div className="flex space-x-4 text-black">
-      <select
-        className="bg-white border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-        value={selectedMonth}
-        onChange={(e) => {
-          storeSelectedMonth(e.target.value);
-          window.location.reload();
-        }}
-      >
-        <option value="">Select Month</option>
-        <option value="all">Full Year</option>
-        {months.map((month, index) => (
-          <option key={index} value={index + 1}>
-            {month}
-          </option>
-        ))}
-      </select>
+      {!justYear && (
+        <select
+          className="bg-white border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          value={month}
+          onChange={(e) => {
+            setMonth(e.target.value);
+          }}
+        >
+          <option value="">Select Month</option>
+          <option value="all">Full Year</option>
+          {months.map((myMonth, index) => (
+            <option key={index} value={index + 1}>
+              {myMonth}
+            </option>
+          ))}
+        </select>
+      )}
 
       <select
         className="bg-white border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-        value={selectedYear}
+        value={year}
         onChange={(e) => {
-          storeSelectedYear(e.target.value);
-          window.location.reload();
+          setYear(e.target.value);
         }}
       >
         <option value="">Select Year</option>
-        {years.map((year, index) => (
-          <option key={index} value={year}>
-            {year}
+        {years.map((myYear, index) => (
+          <option key={index} value={myYear}>
+            {myYear}
           </option>
         ))}
       </select>

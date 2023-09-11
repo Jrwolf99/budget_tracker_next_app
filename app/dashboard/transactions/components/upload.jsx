@@ -1,32 +1,45 @@
-import usePost from '@/app/utility_hooks/usePost';
+import usePost from '@/app/utility/usePost';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { authedPost } from '@/app/utility/common';
+import { currentUserId } from '@/app/utility/localStorage';
+import CardContainer from '@/app/components/general/CardContainer';
 
 const UploadCSVBox = () => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const router = useRouter();
 
-  const { postDataFileUpload: postCSV, response: response } = usePost(
-    '/transactions/upload'
-  );
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
   };
 
+  const postCSV = (formData) => {
+    authedPost(
+      '/spend_accounts/upload_spends_through_CSV',
+      formData,
+      {
+        params: {
+          user_id: currentUserId(),
+        },
+      },
+      true
+    );
+  };
+
   const handleUpload = () => {
+    console.log(selectedFile);
+
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile);
       postCSV(formData);
     }
-    router.push('/transactions');
   };
 
   return (
-    <div className="p-8 shadow-lg rounded-lg bg-white w-96 m-4">
+    <CardContainer customClassNames="mx-auto max-w-[500px]">
       <div className="flex flex-col space-y-4">
         <label
           htmlFor="csvFile"
@@ -48,10 +61,7 @@ const UploadCSVBox = () => {
           Upload
         </button>
       </div>
-      {response && (
-        <div className="text-sm text-gray-600 mt-4">{response.message}</div>
-      )}
-    </div>
+    </CardContainer>
   );
 };
 

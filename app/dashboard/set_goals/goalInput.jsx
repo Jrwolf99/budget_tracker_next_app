@@ -1,4 +1,4 @@
-import usePost from '@/app/utility_hooks/usePost';
+import usePost from '@/app/utility/usePost';
 import React, { useState } from 'react';
 
 export default function GoalInput({ category, myGoals, setMyGoals }) {

@@ -1,15 +1,15 @@
 'use client';
 
-import useFormat from '@/app/utility_hooks/useFormat';
-import useGet from '@/app/utility_hooks/useGet';
+import useFormat from '@/app/utility/useFormat';
+import useGet from '@/app/utility/useGet';
 import React, { useEffect, useState } from 'react';
-import usePost from '@/app/utility_hooks/usePost';
+import usePost from '@/app/utility/usePost';
 import GoalInput from './goalInput';
 
 export default function SetGoalsPage() {
-  const { data: listOfCategories } = useGet(`/categories`);
+  // const { data: listOfCategories } = useGet(`/categories`);
   const { data: listOfGoals } = useGet(`/goals?month=${month}&year=${year}`);
-  const { monthIntToString } = useFormat();
+  // const { monthIntToString } = useFormat();
   const [myGoals, setMyGoals] = useState({});
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function SetGoalsPage() {
 
   return (
     <div className="mt-4 mx-8 p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
-      <h2 className="font-bold mb-8">
+      {/* <h2 className="font-bold mb-8">
         Set Goals for {monthIntToString(month)} {year}
       </h2>
       <form
@@ -76,7 +76,7 @@ export default function SetGoalsPage() {
             Submit
           </button>
         )}
-      </form>
+      </form> */}
     </div>
   );
 }
