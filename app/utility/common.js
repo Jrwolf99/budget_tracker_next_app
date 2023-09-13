@@ -39,7 +39,6 @@ export function isLoggedIn() {
 }
 
 export function login(email, password, router) {
-  alert('Attempting to login...');
   axios
     .post(
       `${process.env.NEXT_PUBLIC_API_BASE_URL_DOMAIN}/api/v1/authentications/sign_in`,

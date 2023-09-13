@@ -29,8 +29,6 @@ const UploadCSVBox = () => {
   };
 
   const handleUpload = () => {
-    console.log(selectedFile);
-
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile);

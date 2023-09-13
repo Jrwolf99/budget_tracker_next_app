@@ -6,8 +6,6 @@ import SelectWithTimer from './utility/SelectWithTimer';
 export default function SpendRow({ spend, listOfCategories }) {
   const [notes, setNotes] = useState(spend.notes);
 
-  console.log(spend);
-
   const [spendCategory, setSpendCategory] = useState(
     spend.spend_category_identifier
   );
@@ -20,9 +18,6 @@ export default function SpendRow({ spend, listOfCategories }) {
   };
 
   const handleSaveSpendCategory = () => {
-    console.log('spend', spend);
-    console.log('spendCategory', spendCategory);
-
     authedPut('/spends/update_spend_category', {
       spend_id: spend.id,
       spend_category: spendCategory,

@@ -10,7 +10,7 @@ import { currentUserId } from '@/app/utility/localStorage';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SpendRow from './SpendRow';
 
-export default function SpendsList() {
+export default function SpendsList({ month, year }) {
   const [spends, setSpends] = useState([]);
 
   const searchParams = useSearchParams();
@@ -24,6 +24,8 @@ export default function SpendsList() {
       params: {
         user_id: currentUserId(),
         spend_category_identifier: searchParams.get('selected_identifier'),
+        month: month,
+        year: year,
       },
     })
       .then((response) => {
@@ -32,7 +34,7 @@ export default function SpendsList() {
       .catch((error) => {
         console.log(error);
       });
-  }, [searchParams]);
+  }, [searchParams, month, year]);
 
   return (
     <CardContainer customClassNames="min-h-[500px]">
