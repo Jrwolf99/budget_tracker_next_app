@@ -29,7 +29,7 @@ const InputWithTimer = ({ timerEndFunction, value, setValue }) => {
     <div className="flex flex-row justify-start items-center gap-1">
       <input
         type="text"
-        className="border border-gray-400 rounded-md p-1"
+        className="border border-gray-400 rounded-md p-1 w-full"
         value={value || ''}
         onChange={(e) => setValue(e.target.value)}
       />

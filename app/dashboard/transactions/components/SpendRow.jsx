@@ -45,6 +45,10 @@ export default function SpendRow({ spend, listOfCategories }) {
       <td className="px-4 py-2 text-sm">
         <div>{spend.description}</div>
       </td>
+
+      <td className="px-4 py-2">
+        <div>{spend.amount}</div>
+      </td>
       <td className="px-4 py-2">
         <InputWithTimer
           timerEndFunction={() => {
@@ -53,9 +57,6 @@ export default function SpendRow({ spend, listOfCategories }) {
           value={notes}
           setValue={setNotes}
         />
-      </td>
-      <td className="px-4 py-2">
-        <div>{spend.amount}</div>
       </td>
       <td className="px-4 py-2 min-w-[220px]">
         <SelectWithTimer
@@ -67,6 +68,7 @@ export default function SpendRow({ spend, listOfCategories }) {
           options={selectOptionsSpendCategory}
         />
       </td>
+
       <td className="px-4 py-2">{spend.date_of_spend}</td>
     </tr>
   );

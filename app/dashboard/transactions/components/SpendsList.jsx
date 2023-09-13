@@ -36,7 +36,7 @@ export default function SpendsList() {
 
   return (
     <CardContainer customClassNames="min-h-[500px]">
-      <table className="table-auto w-full text-left">
+      <table className="table-fixed w-full text-left">
         <thead>
           <HeaderRow
             searchParams={searchParams}
@@ -90,20 +90,10 @@ const HeaderRow = ({
 
   return (
     <tr>
-      <th className="px-4 py-2">Description</th>
+      <th className="px-4 py-2 min-w-[400px]">Description</th>
+      <th className="px-4 py-2 w-[150px]">Amount</th>
       <th className="px-4 py-2">Notes</th>
-      <th className="px-4 py-2">
-        <div className="flex">
-          <button className="text-sm flex-1 inline">Amount</button>
-          <Tooltip
-            className="inline"
-            tooltipText="Amount is all categories except Income, Savings, Refunds, and Transfers"
-          >
-            <InformationCircleIcon className="h-5 w-5 text-gray-500" />
-          </Tooltip>
-        </div>
-      </th>
-      <th className="px-4 py-2 flex gap-4 items-center w-[200px]">
+      <th className="px-4 py-2 flex gap-4 items-center">
         <Select
           id="long-value-select"
           instanceId="long-value-select"
@@ -127,8 +117,8 @@ const HeaderRow = ({
           }
         />
       </th>
-      <th className="px-4 py-2">
-        <button className="text-sm flex-1" onClick={() => handleSort()}>
+      <th className="px-4 py-2 w-[200px]">
+        <button className="flex-1" onClick={() => handleSort()}>
           Date of Transaction
         </button>
       </th>

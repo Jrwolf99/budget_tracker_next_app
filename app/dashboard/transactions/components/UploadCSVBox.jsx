@@ -39,7 +39,7 @@ const UploadCSVBox = () => {
   };
 
   return (
-    <CardContainer customClassNames="mx-auto max-w-[500px]">
+    <CardContainer customClassNames="flex-1 min-w-[300px] max-w-[400px]">
       <div className="flex flex-col space-y-4">
         <label
           htmlFor="csvFile"

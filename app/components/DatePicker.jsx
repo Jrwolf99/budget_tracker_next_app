@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-function DatePicker({ month, setMonth, year, setYear, justYear }) {
+function DatePicker({ month, setMonth, year, setYear }) {
   const months = [
     'January',
     'February',
@@ -23,23 +23,21 @@ function DatePicker({ month, setMonth, year, setYear, justYear }) {
 
   return (
     <div className="flex space-x-4 text-black">
-      {!justYear && (
-        <select
-          className="bg-white border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-          value={month}
-          onChange={(e) => {
-            setMonth(e.target.value);
-          }}
-        >
-          <option value="">Select Month</option>
-          <option value="all">Full Year</option>
-          {months.map((myMonth, index) => (
-            <option key={index} value={index + 1}>
-              {myMonth}
-            </option>
-          ))}
-        </select>
-      )}
+      <select
+        className="bg-white border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+        value={month}
+        onChange={(e) => {
+          setMonth(e.target.value);
+        }}
+      >
+        <option value="">Select Month</option>
+        <option value="all">All Months</option>
+        {months.map((myMonth, index) => (
+          <option key={index} value={index + 1}>
+            {myMonth}
+          </option>
+        ))}
+      </select>
 
       <select
         className="bg-white border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"

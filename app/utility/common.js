@@ -54,7 +54,7 @@ export function login(email, password, router) {
         const token = res.headers.get('X-Session-Token');
         createToken(token);
         setCurrentUserId(res.data.user_id);
-        router.push('/dashboard/transactions');
+        router.push('/dashboard/transactions?selected_identifier=all');
       }
     })
     .catch((err) => {
