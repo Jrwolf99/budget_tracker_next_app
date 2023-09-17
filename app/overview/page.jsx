@@ -4,100 +4,148 @@ import useGet from '@/app/utility/useGet';
 import React, { useEffect, useState } from 'react';
 import DatePicker from '../components/DatePicker';
 import { authedGet } from '../utility/common';
+import { currentUserId } from '../utility/localStorage';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import Tooltip from '../components/ToolTip';
+import CardContainer from '../components/general/CardContainer';
 
 export default function OverviewPage() {
   const { months, formatDollar } = useFormat();
-  const [month, setMonth] = useState('');
   const [year, setYear] = useState(new Date().getFullYear());
 
+  const [overviewData, setOverviewData] = useState([]);
+  const [totals, setTotals] = useState({});
+
+  useEffect(() => {
+    const getOverview = async () => {
+      const response = await authedGet(
+        '/spend_accounts/get_years_overview_report',
+        {
+          params: {
+            user_id: currentUserId(),
+            year: year,
+          },
+        }
+      );
+
+      setOverviewData(response.data.months);
+      setTotals(response.data.totals);
+    };
+    getOverview();
+  }, [year]);
+
   return (
-    <div className="flex justify-center gap-4 px-4">
-      <div className="flex-1 flex flex-wrap p-8 shadow-lg rounded-lg bg-white overflow-x-auto">
-        <h2 className="font-bold mb-8">Overview</h2>
-        <DatePicker justYear year={year} setYear={setYear} />
-        <table className="divide-gray-200 table-auto min-w-full">
+    <div className="flex justify-center gap-4 p-6 bg-slate-200">
+      <CardContainer customClassNames="mb-[150px]">
+        <div className="flex items-center gap-2">
+          <h2 className="font-bold">Overview</h2>
+          <DatePicker justYear year={year} setYear={setYear} />
+        </div>
+        <table className="divide-gray-200 table-auto min-w-full mt-4">
           <thead className="bg-gray-50">
             <tr>
               <th
                 scope="col"
-                className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Month
               </th>
               <th
                 scope="col"
-                className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Income
               </th>
 
               <th
                 scope="col"
-                className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Expenses
               </th>
               <th
                 scope="col"
-                className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Savings or Profit (Income - Expenses)
+                <div className="flex items-center">
+                  <div> Profit (What&apos;s left)</div>
+                  <Tooltip tooltipText="Income - Expenses">
+                    <InformationCircleIcon className="h-4 w-4 ml-2" />
+                  </Tooltip>
+                </div>
               </th>
               <th
                 scope="col"
-                className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Profit Margin AKA Savings Percentage (Profit / Income)
+                <div className="flex items-center">
+                  <div>Profit Margin</div>
+                  <Tooltip tooltipText="Profit / Income">
+                    <InformationCircleIcon className="h-4 w-4 ml-2" />
+                  </Tooltip>
+                </div>
               </th>
             </tr>
           </thead>
-          {/* <tbody className="min-w-full bg-white divide-y divide-gray-200">
-            {overview?.map((month) => (
-              <tr key={month.month}>
-                <td className="px-1 py-2 whitespace-nowrap">
-                  {month.month == 0 ? (
-                    <strong>Total</strong>
-                  ) : (
-                    months[month.month - 1]
-                  )}
+          <tbody className="min-w-full bg-white divide-y divide-gray-200 text-sm">
+            <tr className="text-lg">
+              <td className="px-6 py-3 mr-4 whitespace-nowrap">
+                <strong>Total</strong>
+              </td>
+              <td className="px-6 py-3 mr-4 whitespace-nowrap">
+                <strong>{formatDollar(totals?.total_income || 0)}</strong>
+              </td>
+              <td className="px-6 py-3 mr-4 whitespace-nowrap">
+                <strong>{formatDollar(totals?.total_expenses || 0)}</strong>
+              </td>
+              <td className="px-6 py-3 mr-4 whitespace-nowrap">
+                <strong>{formatDollar(totals?.total_profit || 0)}</strong>
+              </td>
+              <td className="px-6 py-3 mr-4 whitespace-nowrap">
+                <strong>{totals?.total_margin_percentage || 0}</strong>
+              </td>
+            </tr>
+
+            <tr>
+              <td />
+            </tr>
+
+            {overviewData?.map((month) => (
+              <tr key={month.key} className="hover:bg-slate-200">
+                <td className="px-6 py-3 mr-4 whitespace-nowrap">
+                  {month.month_name}
                 </td>
-                <td className="px-1 py-2 whitespace-nowrap">
-                  {month.month == 0 ? (
-                    <strong>{formatDollar(month.total_income)}</strong>
-                  ) : (
-                    formatDollar(month.total_income)
-                  )}
+                <td className="px-6 py-3 mr-4 whitespace-nowrap">
+                  {formatDollar(month.month_income)}
                 </td>
-                <td className="px-1 py-2 whitespace-nowrap">
-                  {month.month == 0 ? (
-                    <strong>{formatDollar(month.total_expenses)}</strong>
-                  ) : (
-                    formatDollar(month.total_expenses)
-                  )}
+                <td className="px-6 py-3 mr-4 whitespace-nowrap">
+                  {formatDollar(month.month_expenses)}
                 </td>
-                <td className="px-1 py-2 whitespace-nowrap">
-                  {month.month == 0 ? (
-                    <strong>{formatDollar(month.total_profit)}</strong>
-                  ) : (
-                    formatDollar(month.total_profit)
-                  )}
-                </td>
-                {month.profit_margin ? (
-                  <td className="px-1 py-2 whitespace-nowrap">
-                    {month.month == 0 ? (
-                      <strong>{month.profit_margin}%</strong>
-                    ) : (
-                      month.profit_margin + '%'
-                    )}
+
+                {month.month_profit > 0 ? (
+                  <td className="px-6 py-3 mr-4 whitespace-nowrap text-green-600">
+                    {formatDollar(month.month_profit)}
                   </td>
                 ) : (
-                  <td className="px-1 py-2 whitespace-nowrap" />
+                  <td className="px-6 py-3 mr-4 whitespace-nowrap text-red-500">
+                    {formatDollar(month.month_profit)}
+                  </td>
+                )}
+
+                {month.month_profit > 0 ? (
+                  <td className="px-6 py-3 mr-4 whitespace-nowrap text-green-600">
+                    {month.month_margin_percentage}
+                  </td>
+                ) : (
+                  <td className="px-6 py-3 mr-4 whitespace-nowrap text-red-600">
+                    {month.month_margin_percentage}
+                  </td>
                 )}
               </tr>
             ))}
-          </tbody> */}
+          </tbody>
         </table>
-      </div>
+      </CardContainer>
     </div>
   );
 }

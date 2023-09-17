@@ -2,39 +2,16 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import Select from 'react-select';
-import Tooltip from '@/app/components/ToolTip';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import CardContainer from '@/app/components/general/CardContainer';
 import { authedGet } from '@/app/utility/common';
-import { currentUserId } from '@/app/utility/localStorage';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SpendRow from './SpendRow';
 
-export default function SpendsList({ month, year }) {
-  const [spends, setSpends] = useState([]);
-
+export default function SpendsList({ spends }) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const [listOfCategories, setListOfCategories] = useState([]);
-
-  useEffect(() => {
-    if (searchParams.get('selected_identifier') === null) return;
-    authedGet('/spend_accounts/show_spends', {
-      params: {
-        user_id: currentUserId(),
-        spend_category_identifier: searchParams.get('selected_identifier'),
-        month: month,
-        year: year,
-      },
-    })
-      .then((response) => {
-        setSpends(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [searchParams, month, year]);
 
   return (
     <CardContainer customClassNames="min-h-[500px]">

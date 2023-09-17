@@ -9,11 +9,9 @@ export function session_token() {
 }
 
 export function createToken(token) {
-  console.log('token', token);
-
   Cookie.set('session_token', token, {
     expires: 7,
-    secure: process.env.NODE_ENV === 'production', // ensure it's secure in production
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
   });
 }

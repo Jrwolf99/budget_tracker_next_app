@@ -45,11 +45,7 @@ const renderCustomizedLegend = ({ payload }) => {
               <strong>Total Expenses</strong>
             </td>
             <td className="px-1 py-2 whitespace-nowrap">
-              <strong>
-                {formatDollar(
-                  payload.reduce((acc, curr) => acc + curr.payload.value, 0)
-                )}
-              </strong>
+              <strong>{15}</strong>
             </td>
             <td className="px-1 py-2 whitespace-nowrap"></td>
           </tr>
@@ -87,23 +83,23 @@ const renderCustomizedLabel = ({
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
   const textAnchor = x > cx ? 'start' : 'end';
 
-  if ((percent * 100).toFixed(0) > 2) return (
-    <text
-      x={x}
-      y={y}
-      fill="black"
-      textAnchor={textAnchor}
-      dominantBaseline="central"
-    >
-      {`${name}: ${(percent * 100).toFixed(0)}%`}
-    </text>
-  )
+  if ((percent * 100).toFixed(0) > 2)
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="black"
+        textAnchor={textAnchor}
+        dominantBaseline="central"
+      >
+        {`${name}: ${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
   else return null;
-
-
 };
 
 const PieChartComponent = ({ data }) => {
+  console.log(data);
   const sortedData = data.sort((a, b) => b.percentage - a.percentage);
 
   const colorScale = [
@@ -124,7 +120,7 @@ const PieChartComponent = ({ data }) => {
       <Pie
         data={sortedData}
         dataKey="value"
-        nameKey="category"
+        nameKey="category_name"
         cx="50%"
         cy="50%"
         innerRadius={35}

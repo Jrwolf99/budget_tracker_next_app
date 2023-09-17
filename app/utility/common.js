@@ -35,7 +35,7 @@ const redirectToLogin = () => {
 };
 
 export function isLoggedIn() {
-  return session_token() !== null;
+  return session_token() !== undefined && session_token() !== null;
 }
 
 export function login(email, password, router) {
@@ -53,7 +53,7 @@ export function login(email, password, router) {
         const token = res.headers.get('X-Session-Token');
         createToken(token);
         setCurrentUserId(res.data.user_id);
-        router.push('/dashboard/transactions?selected_identifier=all');
+        router.push('/transactions?selected_identifier=all');
       }
     })
     .catch((err) => {
@@ -102,15 +102,6 @@ export function authedGet(url, config = {}) {
   });
 }
 
-// export function authedPut(url, data) {
-//   if (!isLoggedIn()) redirectToLogin();
-
-//   return axios.put(buildFullUrl(url), data, {
-//     headers: authHeaders(),
-//     validateStatus,
-//   });
-// }
-
 export function authedDelete(url, config = {}) {
   if (!isLoggedIn()) redirectToLogin();
   return axios
@@ -149,6 +140,11 @@ export function authedPost(url, data, config = {}, isFormData = false) {
     .then((res) => {
       if (res.status === 200 || res.status === 201) {
         alert(isFormData ? 'CSV upload successful' : 'Post successful');
+        if (!isFormData) return;
+        const { created_count, duplicate_count } = res.data;
+        alert(
+          `Created ${created_count} transactions, skipped ${duplicate_count} duplicates`
+        );
       }
     })
     .catch((err) => {
