@@ -3,23 +3,32 @@ import React, { useEffect } from 'react';
 
 import Link from 'next/link';
 
-import { isLoggedIn, logout } from '../utility/common';
+import { logout } from '../utility/common';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
+  const pathName = usePathname();
+
+  if (
+    pathName === '/login' ||
+    pathName === '/register' ||
+    pathName === '/reset-password' ||
+    pathName === '/forgot-password'
+  ) {
+    return null;
+  }
+
   return (
     <div>
       <header className="bg-primaryDark text-white py-6 px-8 shadow-md flex justify-between items-center">
         <h1 className="text-3xl font-semibold">Budget Tracker</h1>
-
-        {isLoggedIn() && (
-          <button
-            className="bg-primaryHover hover:bg-black/30 transition transition-all rounded-md text-white font-semibold py-2 px-4 rounded"
-            type="button"
-            onClick={() => logout()}
-          >
-            <p className="text-md cursor-pointer">Logout</p>
-          </button>
-        )}
+        <button
+          className="bg-primaryHover hover:bg-black/30 transition transition-all rounded-md text-white font-semibold py-2 px-4 rounded"
+          type="button"
+          onClick={() => logout()}
+        >
+          <p className="text-md cursor-pointer">Logout</p>
+        </button>
       </header>
       <nav className="bg-white font-bold shadow-md py-2 text-sm px-6">
         <ul className="flex space-x-4">

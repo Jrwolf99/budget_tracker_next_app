@@ -9,7 +9,7 @@ import { authedGet } from '../utility/common';
 import { currentUserId } from '../utility/localStorage';
 
 export default function TransactionsPage() {
-  const [month, setMonth] = useState('all');
+  const [month, setMonth] = useState(1 + new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear().toString());
 
   const [spends, setSpends] = useState([]);
