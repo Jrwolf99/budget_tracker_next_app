@@ -1,4 +1,11 @@
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 
 const renderCustomizedLegend = ({ payload }) => {
   const formatDollar = (dollarAmount) => {
@@ -10,9 +17,9 @@ const renderCustomizedLegend = ({ payload }) => {
   };
 
   return (
-    <div className="rounded-md shadow-lg mt-4 overflow-hidden text-sm bg-red-400">
+    <div className="rounded-md shadow-lg mt-4 overflow-hidden text-sm bg-slate-200 border">
       <table className="divide-gray-200 table-auto min-w-full">
-        <thead className="bg-gray-50">
+        <thead>
           <tr>
             <th
               scope="col"
@@ -50,7 +57,7 @@ const renderCustomizedLegend = ({ payload }) => {
             <td className="px-1 py-2 whitespace-nowrap"></td>
           </tr>
           {payload.map((entry, index) => (
-            <tr key={`item-${index}`}>
+            <tr key={`item-${index}`} className="hover:bg-slate-200">
               <td className="px-1 py-2 whitespace-nowrap">
                 <span style={{ color: entry.color }}>■</span>
               </td>
@@ -103,40 +110,42 @@ const PieChartComponent = ({ data }) => {
   const sortedData = data.sort((a, b) => b.percentage - a.percentage);
 
   const colorScale = [
-    '#24A638',
-    '#32B94A',
-    '#43C455',
-    '#59CF6B',
-    '#7EDC91',
-    '#A2E9B7',
-    '#C6F6DD',
-    '#EAF3F9',
-    '#F2F9FC',
+    '#0C8111',
+    '#188F20',
+    '#2A9D37',
+    '#4CAB5B',
+    '#6EB97F',
+    '#90C8A3',
+    '#B3D6C7',
+    '#D6E4EC',
   ];
 
   return (
-    <PieChart width={500} height={700}>
-      <Legend content={renderCustomizedLegend} verticalAlign="top" />
-      <Pie
-        data={sortedData}
-        dataKey="value"
-        nameKey="category_name"
-        cx="50%"
-        cy="50%"
-        innerRadius={35}
-        outerRadius={80}
-        label={renderCustomizedLabel}
-        labelLine={false}
-      >
-        {sortedData.map((entry, index) => (
-          <Cell
-            key={`cell-${index}`}
-            fill={colorScale[index % colorScale.length]}
-          />
-        ))}
-      </Pie>
-      <Tooltip />
-    </PieChart>
+    <ResponsiveContainer height="100%" width={500}>
+      <PieChart>
+        <Pie
+          data={sortedData}
+          dataKey="value"
+          nameKey="category_name"
+          cx="50%"
+          cy="50%"
+          innerRadius={60}
+          outerRadius={90}
+          label={renderCustomizedLabel}
+          labelLine={false}
+          className="text-xs"
+        >
+          {sortedData.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={colorScale[index % colorScale.length]}
+            />
+          ))}
+        </Pie>
+        <Legend content={renderCustomizedLegend} verticalAlign="bottom" />
+        <Tooltip />
+      </PieChart>
+    </ResponsiveContainer>
   );
 };
 

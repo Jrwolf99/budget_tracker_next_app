@@ -39,9 +39,13 @@ const HorizontalChart = ({ width, height, graph_data }) => {
     <BarChart width={width} height={height} data={graph_data} layout="vertical">
       <XAxis type="number" domain={[0, 'dataMax+100']} hide />
       <YAxis type="category" dataKey="name" tick={{ fontSize: 12 }} />
-      <Tooltip />
+      {/* <Tooltip active={false} /> */}
       <Bar dataKey="value" fill="#4DBD3D">
-        <LabelList dataKey="value" content={renderCustomizedLabel} />
+        <LabelList
+          dataKey="value"
+          content={renderCustomizedLabel}
+          position="top"
+        />
       </Bar>
     </BarChart>
   );
