@@ -3,7 +3,7 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: '/login',
+        destination: '/transactions?selected_identifier=all',
         permanent: true,
       },
     ];

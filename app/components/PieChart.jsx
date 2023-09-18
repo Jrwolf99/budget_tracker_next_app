@@ -66,7 +66,7 @@ const renderCustomizedLegend = ({ payload }) => {
                 {formatDollar(entry.payload.value)}
               </td>
               <td className="px-1 py-2 whitespace-nowrap">
-                {entry.payload.percentage}%
+                {Math.round(entry.payload.percentage, 0)}%
               </td>
             </tr>
           ))}
