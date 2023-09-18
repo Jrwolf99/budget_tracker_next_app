@@ -38,6 +38,9 @@ export default function RegisterPage() {
           alert(
             'password confirmation: ' + err.response.data.password_confirmation
           );
+        } else {
+          alert('Registration failed');
+          console.log(err);
         }
       });
   };

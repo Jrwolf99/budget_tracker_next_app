@@ -88,8 +88,13 @@ export function unauthedGet(url, config = {}) {
   });
 }
 
-const authHeaders = (isFormData = false) => ({
-  'Content-Type': isFormData ? 'multipart/form-data' : 'application/json',
+const authHeaders = () => ({
+  'Content-Type': 'application/json',
+  AUTHORIZATION: `Token ${session_token()}`,
+});
+
+const authHeadersCSV = () => ({
+  'Content-Type': 'multipart/form-data',
   AUTHORIZATION: `Token ${session_token()}`,
 });
 
@@ -126,12 +131,12 @@ export function authedDelete(url, config = {}) {
     });
 }
 
-export function authedPost(url, data, config = {}, isFormData = false) {
+export function authedPostCSV(url, data, config = {}) {
   if (!isLoggedIn()) redirectToLogin();
   return axios
     .post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}`, data, {
       headers: {
-        ...authHeaders(isFormData),
+        ...authHeadersCSV(),
         ...config.headers,
       },
       validateStatus,
@@ -139,8 +144,7 @@ export function authedPost(url, data, config = {}, isFormData = false) {
     })
     .then((res) => {
       if (res.status === 200 || res.status === 201) {
-        alert(isFormData ? 'CSV upload successful' : 'Post successful');
-        if (!isFormData) return;
+        alert('CSV upload successful');
         const { created_count, duplicate_count } = res.data;
         alert(
           `Created ${created_count} transactions, skipped ${duplicate_count} duplicates`
@@ -155,6 +159,22 @@ export function authedPost(url, data, config = {}, isFormData = false) {
       }
     });
 }
+
+export function authedPost(url, data, config = {}) {
+  if (!isLoggedIn()) redirectToLogin();
+  return axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}`, data, {
+    headers: {
+      ...authHeaders(),
+      ...config.headers,
+    },
+    validateStatus,
+    ...config,
+  });
+}
+
+
+
+
 
 export function authedPut(url, data, config = {}) {
   if (!isLoggedIn()) redirectToLogin();

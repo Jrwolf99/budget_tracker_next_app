@@ -106,9 +106,7 @@ const renderCustomizedLabel = ({
 };
 
 const PieChartComponent = ({ data }) => {
-  console.log(data);
   const sortedData = data.sort((a, b) => b.percentage - a.percentage);
-
   const colorScale = [
     '#0C8111',
     '#188F20',
@@ -119,7 +117,6 @@ const PieChartComponent = ({ data }) => {
     '#B3D6C7',
     '#D6E4EC',
   ];
-
   return (
     <ResponsiveContainer height="100%" width={500}>
       <PieChart>
