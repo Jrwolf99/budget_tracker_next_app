@@ -23,6 +23,7 @@ export function GoalEditModal({
   currentGoal,
   getReport,
   spendCategoryID,
+  categoryName,
 }) {
   const { monthIntToString } = useFormat();
 
@@ -49,7 +50,7 @@ export function GoalEditModal({
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Edit Goal for {categoryName}</DialogTitle>
           <DialogDescription>
             Change your goal for {monthIntToString(month)} {year}.
           </DialogDescription>

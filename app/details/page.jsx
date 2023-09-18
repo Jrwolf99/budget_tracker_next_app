@@ -62,6 +62,7 @@ export default function DetailsPage() {
                 year={year}
                 currentGoal={category.goal}
                 getReport={getReport}
+                categoryName={category.category_name}
                 spendCategoryID={category.category_id}
               >
                 <div className="justify-start bg-slate-100 border border-green-400 rounded-lg p-4 hover:bg-slate-200 transition duration-200 ease-in-out">
