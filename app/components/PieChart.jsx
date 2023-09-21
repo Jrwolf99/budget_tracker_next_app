@@ -1,13 +1,8 @@
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
+import { ChevronDownIcon } from 'lucide-react';
+import { useState } from 'react';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 
-const renderCustomizedLegend = ({ payload }) => {
+const MyTable = ({ payload, colorScale }) => {
   const formatDollar = (dollarAmount) => {
     let dollar = dollarAmount.toLocaleString('en-US', {
       style: 'currency',
@@ -16,61 +11,95 @@ const renderCustomizedLegend = ({ payload }) => {
     return dollar;
   };
 
+  const [folded, setFolded] = useState(false);
+
   return (
     <div className="rounded-md shadow-lg mt-4 overflow-hidden text-sm bg-slate-200 border">
-      <table className="divide-gray-200 table-auto min-w-full">
-        <thead>
+      <table className="divide-gray-200 table-fixed min-w-full transform-all transition duration-200 ease-in-out">
+        <thead
+          onClick={() => setFolded(!folded)}
+          className="cursor-pointer h-[40px]"
+        >
           <tr>
             <th
               scope="col"
               className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            ></th>
-            <th
-              scope="col"
-              className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Category
+              <ChevronDownIcon
+                className={`${
+                  folded ? 'transform -rotate-90' : ''
+                } w-4 h-4 text-gray-500`}
+              />
             </th>
-            <th
-              scope="col"
-              className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Expense
-            </th>
-            <th
-              scope="col"
-              className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Percentage of Total
-            </th>
+            {!folded ? (
+              <>
+                <th
+                  scope="col"
+                  className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Category
+                </th>
+                <th
+                  scope="col"
+                  className="pl-4 pr-6 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Expense
+                </th>
+                <th
+                  scope="col"
+                  className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Percentage of Total Spent
+                </th>
+              </>
+            ) : (
+              <th
+                scope="col"
+                className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                See Expense Percentage Breakdown
+              </th>
+            )}
           </tr>
         </thead>
-        <tbody className="min-w-full bg-white divide-y divide-gray-200">
-          <tr>
-            <td className="px-1 py-2 whitespace-nowrap"></td>
-            <td className="px-1 py-2 whitespace-nowrap text-left">
-              <strong>Total Expenses</strong>
-            </td>
-            <td className="px-1 py-2 whitespace-nowrap">
-              <strong>{15}</strong>
-            </td>
-            <td className="px-1 py-2 whitespace-nowrap"></td>
-          </tr>
-          {payload.map((entry, index) => (
-            <tr key={`item-${index}`} className="hover:bg-slate-200">
+        {folded ? null : (
+          <tbody className="min-w-full bg-white divide-y divide-gray-200">
+            <tr className="hover:bg-slate-200 font-bold">
               <td className="px-1 py-2 whitespace-nowrap">
-                <span style={{ color: entry.color }}>■</span>
+                <span style={{ color: '#000' }}>■</span>
               </td>
-              <td className="px-1 py-2 whitespace-nowrap">{entry.value}</td>
-              <td className="px-1 py-2 whitespace-nowrap">
-                {formatDollar(entry.payload.value)}
+              <td className="px-1 py-2 whitespace-nowrap w-[40px]">
+                Total Spent
               </td>
-              <td className="px-1 py-2 whitespace-nowrap">
-                {Math.round(entry.payload.percentage, 0)}%
+              <td className="pl-4 pr-6 py-2 whitespace-nowrap">
+                {formatDollar(payload.reduce((a, b) => a + b.value, 0))}
               </td>
+              <td className="px-1 py-2 whitespace-nowrap">100%</td>
             </tr>
-          ))}
-        </tbody>
+            {payload.map((entry, index) => (
+              <tr key={`item-${index}`} className="hover:bg-slate-200">
+                <td className="px-1 py-2 whitespace-nowrap">
+                  <span
+                    style={{ color: colorScale[index % colorScale.length] }}
+                  >
+                    ■
+                  </span>
+                </td>
+                <td className="px-1 py-2 whitespace-nowrap w-[40px]">
+                  {entry.label.length > 15
+                    ? entry.label.slice(0, 15) + '...'
+                    : entry.label}
+                </td>
+                <td className="pl-4 pr-6 py-2 whitespace-nowrap">
+                  {formatDollar(entry.value)}
+                </td>
+                <td className="px-1 py-2 whitespace-nowrap">
+                  {Math.round(entry.percentage, 0)}%
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        )}
       </table>
     </div>
   );
@@ -116,14 +145,19 @@ const PieChartComponent = ({ data }) => {
     '#90C8A3',
     '#B3D6C7',
     '#D6E4EC',
+    '#D6E4EC',
+    '#D6E4EC',
+    '#D6E4EC',
+    '#D6E4EC',
   ];
+
   return (
-    <ResponsiveContainer height="100%" width={500}>
-      <PieChart>
+    <div>
+      <PieChart width={400} height={400}>
         <Pie
           data={sortedData}
           dataKey="value"
-          nameKey="category_name"
+          nameKey="label"
           cx="50%"
           cy="50%"
           innerRadius={60}
@@ -139,10 +173,10 @@ const PieChartComponent = ({ data }) => {
             />
           ))}
         </Pie>
-        <Legend content={renderCustomizedLegend} verticalAlign="bottom" />
         <Tooltip />
       </PieChart>
-    </ResponsiveContainer>
+      <MyTable payload={sortedData} colorScale={colorScale} />
+    </div>
   );
 };
 

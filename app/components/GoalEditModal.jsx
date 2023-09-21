@@ -17,7 +17,8 @@ import { currentUserId } from '../utility/localStorage';
 import { DialogClose } from '@radix-ui/react-dialog';
 
 export function GoalEditModal({
-  children,
+  poweredOn,
+  onClose,
   month,
   year,
   currentGoal,
@@ -46,8 +47,7 @@ export function GoalEditModal({
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={poweredOn ? true : false} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Goal for {categoryName}</DialogTitle>

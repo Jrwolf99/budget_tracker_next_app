@@ -48,7 +48,7 @@ const UploadCSVBox = () => {
           onChange={handleFileChange}
         />
         <button
-          className="py-2 px-4 text-sm text-white bg-primaryButton rounded hover:bg-primaryButtonHover focus:outline-none transition-transform transform hover:translate-y-[-2px] hover:shadow-lg"
+          className="py-2 px-4 text-sm text-white bg-primary rounded hover:bg-primary focus:outline-none transition-transform transform hover:translate-y-[-2px] hover:shadow-lg"
           onClick={handleUpload}
         >
           Upload

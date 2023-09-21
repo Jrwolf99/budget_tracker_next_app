@@ -20,10 +20,10 @@ export default function Header() {
 
   return (
     <div>
-      <header className="bg-primaryDark text-white py-6 px-8 shadow-md flex justify-between items-center">
+      <header className="bg-main text-white py-6 px-8 shadow-md flex justify-between items-center">
         <h1 className="text-3xl font-semibold">Budget Tracker</h1>
         <button
-          className="bg-primaryHover hover:bg-black/30 transition transition-all rounded-md text-white font-semibold py-2 px-4 rounded"
+          className="bg-mainHover hover:bg-black/30 transition transition-all rounded-md text-white font-semibold py-2 px-4 rounded"
           type="button"
           onClick={() => logout()}
         >
@@ -35,7 +35,7 @@ export default function Header() {
           <li>
             <Link
               href="/transactions?selected_identifier=all"
-              className="text-gray-800 hover:text-primaryHover"
+              className="text-gray-800 hover:text-mainHover"
             >
               Transactions
             </Link>
@@ -43,7 +43,7 @@ export default function Header() {
           <li>
             <Link
               href="/overview"
-              className="text-gray-800 hover:text-primaryHover"
+              className="text-gray-800 hover:text-mainHover"
             >
               Overview
             </Link>
@@ -51,7 +51,7 @@ export default function Header() {
           <li>
             <Link
               href="/details"
-              className="text-gray-800 hover:text-primaryHover"
+              className="text-gray-800 hover:text-mainHover"
             >
               Details
             </Link>
