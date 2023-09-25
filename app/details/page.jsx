@@ -1,16 +1,13 @@
 'use client';
 import useFormat from '@/app/utility/useFormat';
 import React, { use, useCallback, useEffect, useState } from 'react';
-import HorizontalChart from '../components/HorizontalChart';
 import PieChartComponent from '../components/PieChart';
 import { authedGet } from '../utility/common';
 import { currentUserId } from '../utility/localStorage';
 import CardContainer from '../components/general/CardContainer';
 import DatePicker from '../components/DatePicker';
-import { GoalEditModal } from '../components/GoalEditModal';
 import { Slider } from '@/components/ui/slider';
-import Tooltip from '../components/ToolTip';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import CategoryCard from './CategoryCard';
 
 const reportTypes = [
   {
@@ -33,8 +30,6 @@ const reportTypes = [
 
 export default function DetailsPage() {
   const [totalsByCategory, setTotalsByCategory] = useState([]);
-  console.log('------------------------');
-  console.log('totalsByCategoruyyyyyyyyyyyyyyyyy', totalsByCategory);
 
   const { monthIntToString } = useFormat();
 
@@ -43,10 +38,7 @@ export default function DetailsPage() {
 
   const [currentReportType, setCurrentReportType] = useState(0);
 
-  const [showEditGoalModal, setShowEditGoalModal] = useState(false);
-  const [pickedCategory, setPickedCategory] = useState(null);
-
-  const getReport = useCallback(() => {
+  useEffect(() => {
     authedGet('/spend_accounts/get_totals_by_category_report', {
       params: {
         user_id: currentUserId(),
@@ -56,23 +48,35 @@ export default function DetailsPage() {
       },
     })
       .then((res) => {
-        setTotalsByCategory(res.data);
+        setTotalsByCategory((prev) => {
+          console.log('prev', prev);
+          return res.data;
+        });
+        console.log('res', res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [month, year, currentReportType]);
+  function sortByIdentifier(categories) {
+    if (!categories) return [];
 
-  useEffect(() => {
-    getReport();
-  }, [month, year, currentReportType]);
+    return categories.slice().sort((a, b) => {
+      if (
+        typeof a?.identifier === 'string' &&
+        typeof b?.identifier === 'string'
+      ) {
+        return a?.identifier.localeCompare(b?.identifier);
+      }
+      return 0;
+    });
+  }
 
   return (
     <>
       <CardContainer customClassNames="m-4">
         <div className="flex justify-between items-center pr-8 mb-6">
           <h2 className="font-bold">{monthIntToString(month)} Expenses</h2>
-
           <DatePicker
             month={month}
             year={year}
@@ -103,39 +107,17 @@ export default function DetailsPage() {
               </div>
             </div>
             <div className="flex flex-wrap gap-4 justify-center items-center w-full">
-              {totalsByCategory?.map((category) => (
-                <div
+              {sortByIdentifier(totalsByCategory).map((category, index) => (
+                <CategoryCard
                   key={category.identifier}
-                  onClick={() => {
-                    setShowEditGoalModal(true);
-                    setPickedCategory(category);
-                  }}
-                  className="justify-start bg-slate-100 border border-green-400 rounded-lg p-4 hover:bg-slate-200 transition duration-200 ease-in-out"
-                >
-                  <div className="flex justify-between items-center mb-4">
-                    <p className="text-sm">{category.label}</p>
-                    <Tooltip
-                      tooltipText={
-                        <p className="text-sm">
-                          {category.list_of_included_categories.join(', ')}
-                        </p>
-                      }
-                      position="top"
-                    >
-                      <InformationCircleIcon className="h-4 w-4 ml-2" />
-                    </Tooltip>
-                  </div>
-                  <HorizontalChart
-                    graph_data={[
-                      { name: 'Target', value: category.goal },
-                      { name: 'Actual', value: category.value },
-                    ]}
-                    dataKeys={['actual', 'target']}
-                    width={200}
-                    height={120}
-                  />
-                </div>
+                  category={category}
+                  month={month}
+                  year={year}
+                  currentReportType={currentReportType}
+                  reportTypes={reportTypes}
+                />
               ))}
+
               {!totalsByCategory?.length && (
                 <div className="text-center">
                   No transactions recorded for this month.
@@ -144,20 +126,6 @@ export default function DetailsPage() {
             </div>
           </div>
         </div>
-        <GoalEditModal
-          poweredOn={
-            'granular' === reportTypes[currentReportType].identifier
-              ? showEditGoalModal
-              : false
-          }
-          onClose={() => setShowEditGoalModal(false)}
-          month={month}
-          year={year}
-          currentGoal={pickedCategory?.goal}
-          getReport={getReport}
-          categoryName={pickedCategory?.label}
-          spendCategoryID={pickedCategory?.identifier}
-        />
       </CardContainer>
     </>
   );

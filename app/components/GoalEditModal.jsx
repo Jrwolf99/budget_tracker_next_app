@@ -22,7 +22,6 @@ export function GoalEditModal({
   month,
   year,
   currentGoal,
-  getReport,
   spendCategoryID,
   categoryName,
 }) {
@@ -39,7 +38,7 @@ export function GoalEditModal({
       spend_category_id: spendCategoryID,
     })
       .then((res) => {
-        getReport();
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
