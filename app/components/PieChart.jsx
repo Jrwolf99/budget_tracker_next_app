@@ -15,7 +15,7 @@ const MyTable = ({ payload, colorScale }) => {
 
   return (
     <div className="rounded-md shadow-lg mt-4 overflow-hidden text-sm bg-slate-200 border">
-      <table className="divide-gray-200 table-fixed min-w-full transform-all transition duration-200 ease-in-out">
+      <table className="divide-gray-200 table-auto min-w-full transform-all transition duration-200 ease-in-out">
         <thead
           onClick={() => setFolded(!folded)}
           className="cursor-pointer h-[40px]"
@@ -45,12 +45,6 @@ const MyTable = ({ payload, colorScale }) => {
                 >
                   Expense
                 </th>
-                <th
-                  scope="col"
-                  className="px-1 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  Percentage of Total Spent
-                </th>
               </>
             ) : (
               <th
@@ -68,13 +62,10 @@ const MyTable = ({ payload, colorScale }) => {
               <td className="px-1 py-2 whitespace-nowrap">
                 <span style={{ color: '#000' }}>■</span>
               </td>
-              <td className="px-1 py-2 whitespace-nowrap w-[40px]">
-                Total Spent
-              </td>
+              <td className="px-1 py-2 whitespace-nowrap">Total Spent</td>
               <td className="pl-4 pr-6 py-2 whitespace-nowrap">
                 {formatDollar(payload.reduce((a, b) => a + b.value, 0))}
               </td>
-              <td className="px-1 py-2 whitespace-nowrap">100%</td>
             </tr>
             {payload.map((entry, index) => (
               <tr key={`item-${index}`} className="hover:bg-slate-200">
@@ -85,7 +76,7 @@ const MyTable = ({ payload, colorScale }) => {
                     ■
                   </span>
                 </td>
-                <td className="px-1 py-2 whitespace-nowrap w-[40px]">
+                <td className="px-1 py-2 whitespace-nowrap">
                   {entry.label.length > 15
                     ? entry.label.slice(0, 15) + '...'
                     : entry.label}
@@ -93,9 +84,9 @@ const MyTable = ({ payload, colorScale }) => {
                 <td className="pl-4 pr-6 py-2 whitespace-nowrap">
                   {formatDollar(entry.value)}
                 </td>
-                <td className="px-1 py-2 whitespace-nowrap">
+                {/* <td className="px-1 py-2 whitespace-nowrap">
                   {Math.round(entry.percentage, 0)}%
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

@@ -135,6 +135,9 @@ export default function DetailsPage() {
                     year={year}
                     currentReportType={currentReportType}
                     reportTypes={reportTypes}
+                    canHover={
+                      reportTypes[currentReportType].identifier === 'granular'
+                    }
                   />
                 </div>
               ))}

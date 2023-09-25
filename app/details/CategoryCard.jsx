@@ -11,6 +11,7 @@ export default function CategoryCard({
   year,
   currentReportType,
   reportTypes,
+  canHover,
 }) {
   const [showEditGoalModal, setShowEditGoalModal] = useState(false);
   const [pickedCategory, setPickedCategory] = useState(null);
@@ -19,11 +20,13 @@ export default function CategoryCard({
     <>
       <div
         onClick={() => {
-          console.log('clicked');
+          if (!canHover) return;
           setShowEditGoalModal(true);
           setPickedCategory(category);
         }}
-        className="w-full justify-start bg-slate-100 border border-green-400 rounded-lg p-4 hover:bg-slate-200 transition duration-200 ease-in-out"
+        className={`w-full justify-start bg-slate-100 border border-green-400 rounded-lg p-4 ${
+          canHover ? 'hover:bg-slate-200' : ''
+        } transition duration-200 ease-in-out`}
       >
         <div className="flex justify-between items-center mb-4 ">
           <p className="text-sm">{category.label}</p>
@@ -38,7 +41,7 @@ export default function CategoryCard({
             <InformationCircleIcon className="h-4 w-4 ml-2" />
           </Tooltip>
         </div>
-        <ResponsiveContainer width="100%" height={120}>
+        <ResponsiveContainer width="99%" height={120}>
           <HorizontalChart
             graph_data={[
               { name: 'Target', value: category.goal },
