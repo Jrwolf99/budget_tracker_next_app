@@ -38,6 +38,9 @@ export default function DetailsPage() {
 
   const [currentReportType, setCurrentReportType] = useState(0);
 
+
+  const [viewOrganization, setviewOrganization] = useState(false);
+
   useEffect(() => {
     authedGet('/spend_accounts/get_totals_by_category_report', {
       params: {
@@ -77,13 +80,23 @@ export default function DetailsPage() {
       <CardContainer customClassNames="m-4">
         <div className="flex justify-between items-center pr-8 mb-6">
           <h2 className="font-bold">{monthIntToString(month)} Expenses</h2>
-          <DatePicker
-            month={month}
-            year={year}
-            setMonth={setMonth}
-            setYear={setYear}
-            noAll
-          />
+          <div className="flex justify-between items-center gap-4">
+            <button
+              className="bg-primary text-white px-4 py-2 rounded-lg"
+              onClick={() => {
+                setviewOrganization(!viewOrganization);
+              }}
+            >
+              Switch View
+            </button>
+            <DatePicker
+              month={month}
+              year={year}
+              setMonth={setMonth}
+              setYear={setYear}
+              noAll
+            />
+          </div>
         </div>
         <div className="flex gap-8 justify-between items-start">
           <div className="h-full bg-slate-100 border border-green-400 p-4 rounded-lg">
@@ -106,16 +119,24 @@ export default function DetailsPage() {
                 <p>Broad</p>
               </div>
             </div>
-            <div className="flex flex-wrap gap-4 justify-center items-center w-full">
+            <div
+              className={`flex flex-wrap p-4 rounded-lg
+            ${viewOrganization ? 'flex-col' : 'flex-row'}
+            gap-4 justify-center items-center w-full`}
+            >
               {sortByIdentifier(totalsByCategory).map((category, index) => (
-                <CategoryCard
+                <div
                   key={category.identifier}
-                  category={category}
-                  month={month}
-                  year={year}
-                  currentReportType={currentReportType}
-                  reportTypes={reportTypes}
-                />
+                  className={`${viewOrganization ? 'w-full' : 'w-[300px]'}`}
+                >
+                  <CategoryCard
+                    category={category}
+                    month={month}
+                    year={year}
+                    currentReportType={currentReportType}
+                    reportTypes={reportTypes}
+                  />
+                </div>
               ))}
 
               {!totalsByCategory?.length && (
