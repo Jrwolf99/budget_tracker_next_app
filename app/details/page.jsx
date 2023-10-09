@@ -1,6 +1,7 @@
 'use client';
 import useFormat from '@/app/utility/useFormat';
-import React, { use, useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Select from 'react-select';
 import PieChartComponent from '../components/PieChart';
 import { authedGet } from '../utility/common';
 import { currentUserId } from '../utility/localStorage';
@@ -28,18 +29,21 @@ const reportTypes = [
   },
 ];
 
-export default function DetailsPage() {
-  const [totalsByCategory, setTotalsByCategory] = useState([]);
+const onlyFilterOptions = [
+  { value: 'only_needs', label: 'Only Needs' },
+  { value: 'only_wants', label: 'Only Wants' },
+];
 
+export default function DetailsPage() {
   const { monthIntToString } = useFormat();
 
   const [month, setMonth] = useState(1 + new Date().getMonth());
   const [year, setYear] = useState(new Date().getFullYear().toString());
 
+  const [totalsByCategory, setTotalsByCategory] = useState([]);
   const [currentReportType, setCurrentReportType] = useState(0);
-
-
   const [viewOrganization, setviewOrganization] = useState(false);
+  const [onlyFilter, setOnlyFilter] = useState(null);
 
   useEffect(() => {
     authedGet('/spend_accounts/get_totals_by_category_report', {
@@ -48,6 +52,7 @@ export default function DetailsPage() {
         year: year,
         month: month,
         report_type: reportTypes[currentReportType].identifier,
+        only_needs_or_only_wants: onlyFilter,
       },
     })
       .then((res) => {
@@ -60,7 +65,7 @@ export default function DetailsPage() {
       .catch((err) => {
         console.log(err);
       });
-  }, [month, year, currentReportType]);
+  }, [month, year, currentReportType, onlyFilter]);
   function sortByIdentifier(categories) {
     if (!categories) return [];
 
@@ -81,6 +86,23 @@ export default function DetailsPage() {
         <div className="flex justify-between items-center pr-8 mb-6">
           <h2 className="font-bold">{monthIntToString(month)} Expenses</h2>
           <div className="flex justify-between items-center gap-4">
+            <Select
+              id="long-value-select"
+              instanceId="long-value-select"
+              className="text-xs flex-1 w-[175px]"
+              options={onlyFilterOptions}
+              onChange={(e) => {
+                setOnlyFilter(e?.value);
+              }}
+              isClearable
+              isSearchable={false}
+              value={{
+                value: onlyFilter,
+                label: onlyFilterOptions.find(
+                  (option) => option?.value === onlyFilter
+                )?.label,
+              }}
+            />
             <button
               className="bg-primary text-white px-4 py-2 rounded-lg"
               onClick={() => {

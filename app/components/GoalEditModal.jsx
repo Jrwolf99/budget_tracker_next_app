@@ -35,7 +35,7 @@ export function GoalEditModal({
       user_id: currentUserId(),
       month,
       year,
-      spend_category_id: spendCategoryID,
+      spend_category_identifier: spendCategoryID,
     })
       .then((res) => {
         window.location.reload();
