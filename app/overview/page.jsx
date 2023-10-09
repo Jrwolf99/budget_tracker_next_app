@@ -8,9 +8,11 @@ import { currentUserId } from '../utility/localStorage';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import Tooltip from '../components/ToolTip';
 import CardContainer from '../components/general/CardContainer';
+import { useRouter } from 'next/navigation';
 
 export default function OverviewPage() {
-  const { months, formatDollar } = useFormat();
+  const router = useRouter();
+  const { formatDollar } = useFormat();
   const [year, setYear] = useState(new Date().getFullYear());
 
   const [overviewData, setOverviewData] = useState([]);
@@ -110,8 +112,19 @@ export default function OverviewPage() {
               <td />
             </tr>
 
+            {/* TODO: finish the linking between the details page, and going to the specific transactions when the category is clicked */}
+
             {overviewData?.map((month) => (
-              <tr key={month.key} className="hover:bg-slate-200">
+              <tr
+                key={month.key}
+                className="hover:bg-slate-200"
+                onClick={() =>
+                  router.push(
+                    `/details?month=${month.month_number}&year=${year}`
+                  )
+                }
+                style={{ cursor: 'pointer' }}
+              >
                 <td className="px-6 py-3 mr-4 whitespace-nowrap">
                   {month.month_name}
                 </td>

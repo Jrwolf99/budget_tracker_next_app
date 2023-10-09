@@ -9,6 +9,7 @@ import CardContainer from '../components/general/CardContainer';
 import DatePicker from '../components/DatePicker';
 import { Slider } from '@/components/ui/slider';
 import CategoryCard from './CategoryCard';
+import { useSearchParams } from 'next/navigation';
 
 const reportTypes = [
   {
@@ -36,9 +37,15 @@ const onlyFilterOptions = [
 
 export default function DetailsPage() {
   const { monthIntToString } = useFormat();
+  const searchParams = useSearchParams();
 
-  const [month, setMonth] = useState(1 + new Date().getMonth());
-  const [year, setYear] = useState(new Date().getFullYear().toString());
+  const [month, setMonth] = useState(
+    searchParams.get('month') || 1 + new Date().getMonth()
+  );
+
+  const [year, setYear] = useState(
+    searchParams.get('year') || new Date().getFullYear().toString()
+  );
 
   const [totalsByCategory, setTotalsByCategory] = useState([]);
   const [currentReportType, setCurrentReportType] = useState(0);
@@ -57,10 +64,8 @@ export default function DetailsPage() {
     })
       .then((res) => {
         setTotalsByCategory((prev) => {
-          console.log('prev', prev);
           return res.data;
         });
-        console.log('res', res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -122,7 +127,13 @@ export default function DetailsPage() {
         </div>
         <div className="flex gap-8 justify-between items-start">
           <div className="h-full bg-slate-100 border border-green-400 p-4 rounded-lg">
-            {totalsByCategory && <PieChartComponent data={totalsByCategory} />}
+            {totalsByCategory && (
+              <PieChartComponent
+                data={totalsByCategory}
+                month={month}
+                year={year}
+              />
+            )}
           </div>
           <div className="w-full">
             <div className="flex justify-between items-center mb-4">

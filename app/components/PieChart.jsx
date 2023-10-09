@@ -1,8 +1,9 @@
 import { ChevronDownIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
-const MyTable = ({ payload, colorScale }) => {
+const MyTable = ({ payload, colorScale, month, year }) => {
   const formatDollar = (dollarAmount) => {
     let dollar = dollarAmount.toLocaleString('en-US', {
       style: 'currency',
@@ -12,6 +13,7 @@ const MyTable = ({ payload, colorScale }) => {
   };
 
   const [folded, setFolded] = useState(false);
+  const router = useRouter();
 
   return (
     <div className="rounded-md shadow-lg mt-4 overflow-hidden text-sm bg-slate-200 border">
@@ -68,7 +70,25 @@ const MyTable = ({ payload, colorScale }) => {
               </td>
             </tr>
             {payload.map((entry, index) => (
-              <tr key={`item-${index}`} className="hover:bg-slate-200">
+              <tr
+                key={`item-${index}`}
+                className="hover:bg-slate-200"
+                onClick={() => {
+                  console.log(payload);
+                  if (
+                    payload.includes(
+                      payload.find(
+                        (item) => item.identifier === 'groceries_food'
+                      )
+                    )
+                  ) {
+                    router.push(
+                      `/transactions?month=${month}&year=${year}&selected_identifier=${entry.identifier}`
+                    );
+                  }
+                }}
+                style={{ cursor: 'pointer' }}
+              >
                 <td className="px-1 py-2 whitespace-nowrap">
                   <span
                     style={{ color: colorScale[index % colorScale.length] }}
@@ -84,9 +104,6 @@ const MyTable = ({ payload, colorScale }) => {
                 <td className="pl-4 pr-6 py-2 whitespace-nowrap">
                   {formatDollar(entry.value)}
                 </td>
-                {/* <td className="px-1 py-2 whitespace-nowrap">
-                  {Math.round(entry.percentage, 0)}%
-                </td> */}
               </tr>
             ))}
           </tbody>
@@ -125,7 +142,7 @@ const renderCustomizedLabel = ({
   else return null;
 };
 
-const PieChartComponent = ({ data }) => {
+const PieChartComponent = ({ data, month, year }) => {
   const sortedData = data.sort((a, b) => b.percentage - a.percentage);
   const colorScale = [
     '#0C8111',
@@ -166,7 +183,12 @@ const PieChartComponent = ({ data }) => {
         </Pie>
         <Tooltip />
       </PieChart>
-      <MyTable payload={sortedData} colorScale={colorScale} />
+      <MyTable
+        payload={sortedData}
+        colorScale={colorScale}
+        month={month}
+        year={year}
+      />
     </div>
   );
 };

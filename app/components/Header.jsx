@@ -34,14 +34,6 @@ export default function Header() {
         <ul className="flex space-x-4">
           <li>
             <Link
-              href="/transactions?selected_identifier=all"
-              className="text-gray-800 hover:text-mainHover"
-            >
-              Transactions
-            </Link>
-          </li>
-          <li>
-            <Link
               href="/overview"
               className="text-gray-800 hover:text-mainHover"
             >
@@ -54,6 +46,14 @@ export default function Header() {
               className="text-gray-800 hover:text-mainHover"
             >
               Details
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/transactions?selected_identifier=all"
+              className="text-gray-800 hover:text-mainHover"
+            >
+              Transactions
             </Link>
           </li>
         </ul>

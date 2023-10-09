@@ -1,14 +1,10 @@
-import usePost from '@/app/utility/usePost';
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { authedPostCSV } from '@/app/utility/common';
 import { currentUserId } from '@/app/utility/localStorage';
 import CardContainer from '@/app/components/general/CardContainer';
 
 const UploadCSVBox = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-
-  const router = useRouter();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
