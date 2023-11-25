@@ -10,6 +10,7 @@ import DatePicker from '../components/DatePicker';
 import { Slider } from '@/components/ui/slider';
 import CategoryCard from './CategoryCard';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const reportTypes = [
   {
@@ -31,6 +32,7 @@ const reportTypes = [
 ];
 
 const onlyFilterOptions = [
+  { value: null, label: 'All' },
   { value: 'only_needs', label: 'Only Needs' },
   { value: 'only_wants', label: 'Only Wants' },
 ];
@@ -38,6 +40,7 @@ const onlyFilterOptions = [
 export default function DetailsPage() {
   const { monthIntToString } = useFormat();
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const [month, setMonth] = useState(
     searchParams.get('month') || 1 + new Date().getMonth()
@@ -89,17 +92,18 @@ export default function DetailsPage() {
     <>
       <CardContainer customClassNames="m-4">
         <div className="flex justify-between items-center pr-8 mb-6">
-          <h2 className="font-bold">{monthIntToString(month)} Expenses</h2>
+          <h2 className="font-bold">
+            {monthIntToString(month)} {year} Expenses
+          </h2>
           <div className="flex justify-between items-center gap-4">
             <Select
               id="long-value-select"
               instanceId="long-value-select"
-              className="text-xs flex-1 w-[175px]"
+              className="text-xs flex-1 w-[130px]"
               options={onlyFilterOptions}
               onChange={(e) => {
                 setOnlyFilter(e?.value);
               }}
-              isClearable
               isSearchable={false}
               value={{
                 value: onlyFilter,
@@ -109,12 +113,12 @@ export default function DetailsPage() {
               }}
             />
             <button
-              className="bg-primary text-white px-4 py-2 rounded-lg"
+              className="bg-primary text-white text-sm px-4 py-2 rounded-lg transition-all hover:bg-mainHover transform hover:scale-105"
               onClick={() => {
                 setviewOrganization(!viewOrganization);
               }}
             >
-              Switch View
+              {viewOrganization ? 'View by Cards' : 'View by List'}
             </button>
             <DatePicker
               month={month}
@@ -123,6 +127,15 @@ export default function DetailsPage() {
               setYear={setYear}
               noAll
             />
+            <button
+              type="button"
+              className="underline text-sm"
+              onClick={() => {
+                router.push('/details/edit_goals');
+              }}
+            >
+              Goal Calculator
+            </button>
           </div>
         </div>
         <div className="flex gap-8 justify-between items-start">
