@@ -12,6 +12,11 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = React.useState('');
   //using axios
   const handleRegister = () => {
+
+    console.log(
+      'process.env.NEXT_PUBLIC_API_BASE_URL_DOMAIN:',
+      process.env.NEXT_PUBLIC_API_BASE_URL_DOMAIN
+    );
     axios
       .post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL_DOMAIN}/api/v1/authentications/sign_up`,
@@ -22,11 +27,14 @@ export default function RegisterPage() {
         }
       )
       .then((res) => {
+        console.log('res:               ', res);
         if (res.status === 200) {
           alert('Registration successful');
         }
       })
       .catch((err) => {
+        console.log('err:               ', err);
+
         console.log(JSON.stringify(err.response.data));
         if (err.response.data.password) {
           alert('password: ' + err.response.data.password);

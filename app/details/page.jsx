@@ -125,7 +125,6 @@ export default function DetailsPage() {
               year={year}
               setMonth={setMonth}
               setYear={setYear}
-              noAll
             />
             <button
               type="button"
