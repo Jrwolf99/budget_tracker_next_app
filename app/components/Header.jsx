@@ -21,13 +21,13 @@ export default function Header() {
   return (
     <div>
       <header className="bg-main text-white py-6 px-8 shadow-md flex justify-between items-center">
-        <h1 className="text-3xl font-semibold">Budget Tracker</h1>
+        <h1 className="text-xl sm:text-3xl font-semibold">Budget Tracker</h1>
         <button
           className="bg-mainHover hover:bg-black/30 transition transition-all rounded-md text-white font-semibold py-2 px-4 rounded"
           type="button"
           onClick={() => logout()}
         >
-          <p className="text-md cursor-pointer">Logout</p>
+          <p className="text-xs sm:text-md cursor-pointer">Logout</p>
         </button>
       </header>
       <nav className="bg-white font-bold shadow-md py-2 text-sm px-6">
