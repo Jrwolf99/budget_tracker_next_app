@@ -6,12 +6,15 @@ import CardContainer from '@/app/components/general/CardContainer';
 import { authedGet } from '@/app/utility/common';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import SpendRow from './SpendRow';
+import useResize from '@/app/utility/useResize';
 
 export default function SpendsList({ spends }) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const [listOfCategories, setListOfCategories] = useState([]);
+
+  const { isSmallScreenAndUnder, isExtraSmallScreenAndUnder } = useResize();
 
   return (
     <CardContainer customClassNames="min-h-[500px]">
@@ -23,6 +26,7 @@ export default function SpendsList({ spends }) {
             pathname={pathname}
             listOfCategories={listOfCategories}
             setListOfCategories={setListOfCategories}
+            isSmallScreenAndUnder={isSmallScreenAndUnder}
           />
         </thead>
         <tbody>
@@ -32,6 +36,7 @@ export default function SpendsList({ spends }) {
                 key={spend.id}
                 spend={spend}
                 listOfCategories={listOfCategories}
+                isSmallScreenAndUnder={isSmallScreenAndUnder}
               />
             );
           })}
@@ -47,6 +52,7 @@ const HeaderRow = ({
   pathname,
   listOfCategories,
   setListOfCategories,
+  isSmallScreenAndUnder,
 }) => {
   useEffect(() => {
     authedGet('/spend_categories/show_spend_categories_all').then(
@@ -69,9 +75,13 @@ const HeaderRow = ({
 
   return (
     <tr>
-      <th className="px-4 py-2 min-w-[400px]">Description</th>
-      <th className="px-4 py-2 w-[150px]">Amount</th>
-      <th className="px-4 py-2">Notes</th>
+      {!isSmallScreenAndUnder && (
+        <>
+          <th className="px-4 py-2 min-w-[400px]">Description</th>
+          <th className="px-4 py-2 w-[150px]">Amount</th>
+          <th className="px-4 py-2">Notes</th>
+        </>
+      )}
       <th className="px-4 py-2 flex gap-4 items-center">
         <Select
           id="long-value-select"
@@ -96,11 +106,13 @@ const HeaderRow = ({
           }
         />
       </th>
-      <th className="px-4 py-2 w-[200px]">
-        <button className="flex-1" onClick={() => handleSort()}>
-          Date of Transaction
-        </button>
-      </th>
+      {!isSmallScreenAndUnder && (
+        <th className="px-4 py-2 w-[200px]">
+          <button className="flex-1" onClick={() => handleSort()}>
+            Date of Transaction
+          </button>
+        </th>
+      )}
     </tr>
   );
 };

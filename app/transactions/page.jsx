@@ -9,7 +9,6 @@ import { authedGet } from '../utility/common';
 import { currentUserId } from '../utility/localStorage';
 
 export default function TransactionsPage() {
-
   const searchParams = useSearchParams();
 
   const [month, setMonth] = useState(
@@ -23,7 +22,6 @@ export default function TransactionsPage() {
   const [spends, setSpends] = useState([]);
   const [totalSpent, setTotalSpent] = useState(0);
   const [totalEarned, setTotalEarned] = useState(0);
-
 
   useEffect(() => {
     if (searchParams.get('selected_identifier') === null) return;

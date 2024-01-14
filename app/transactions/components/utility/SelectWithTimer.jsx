@@ -32,7 +32,7 @@ export default function SelectWithTimer({
   }, [value]);
 
   return (
-    <div className="flex flex-row justify-start items-center gap-1 w-full">
+    <div className="flex flex-row justify-start items-center gap-1 w-full max-w-[300px]">
       <Select
         options={options}
         value={options.find((option) => option.value === value)}
