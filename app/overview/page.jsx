@@ -38,10 +38,10 @@ export default function OverviewPage() {
 
 
   const headerClasses =
-    'text-[8px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider';
+    'text-[7px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider';
 
   const tableClasses =
-    'text-[8px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap';
+    'text-[7px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap';
 
   return (
     <div className="flex justify-center gap-4 p-1 pt-6 sm:p-6 bg-slate-200">
