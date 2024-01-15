@@ -55,7 +55,7 @@ export default function LoginPage() {
             Go to Register
           </Link>
           <Link
-            href="/login"
+            href="/reset-password"
             className="underline hover:text-blue-500 w-full m-auto"
           >
             Forgot password?

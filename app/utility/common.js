@@ -87,6 +87,11 @@ export function unauthedGet(url, config = {}) {
     ...config,
   });
 }
+export function unauthedPost(url, data, config = {}) {
+  return axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}`, data, {
+    ...config,
+  });
+}
 
 const authHeaders = () => ({
   'Content-Type': 'application/json',
