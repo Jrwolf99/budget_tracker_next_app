@@ -36,8 +36,15 @@ export default function OverviewPage() {
     getOverview();
   }, [year]);
 
+
+  const headerClasses =
+    'text-[8px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider';
+
+  const tableClasses =
+    'text-[8px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap';
+
   return (
-    <div className="flex justify-center gap-4 p-6 bg-slate-200">
+    <div className="flex justify-center gap-4 p-1 pt-6 sm:p-6 bg-slate-200">
       <CardContainer customClassNames="mb-[150px]">
         <div className="flex items-center gap-2">
           <h2 className="font-bold">Overview</h2>
@@ -46,29 +53,17 @@ export default function OverviewPage() {
         <table className="divide-gray-200 table-auto min-w-full mt-4">
           <thead className="bg-gray-50">
             <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
+              <th scope="col" className={headerClasses}>
                 Month
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
+              <th scope="col" className={headerClasses}>
                 Income
               </th>
 
-              <th
-                scope="col"
-                className="px-6 py-3 mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
+              <th scope="col" className={headerClasses}>
                 Expenses
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
+              <th scope="col" className={headerClasses}>
                 <div className="flex items-center">
                   <div> Profit (What&apos;s left)</div>
                   <Tooltip tooltipText="Income - Expenses">
@@ -76,10 +71,7 @@ export default function OverviewPage() {
                   </Tooltip>
                 </div>
               </th>
-              <th
-                scope="col"
-                className="px-6 py-3 mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-              >
+              <th scope="col" className={`${headerClasses} text-center`}>
                 <div className="flex items-center">
                   <div>Profit Margin</div>
                   <Tooltip tooltipText="Profit / Income">
@@ -91,19 +83,19 @@ export default function OverviewPage() {
           </thead>
           <tbody className="min-w-full bg-white divide-y divide-gray-200 text-sm">
             <tr className="text-lg">
-              <td className="px-6 py-3 mr-4 whitespace-nowrap">
+              <td className="text-[11px] sm:text-[20px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap">
                 <strong>Total</strong>
               </td>
-              <td className="px-6 py-3 mr-4 whitespace-nowrap">
+              <td className="text-[11px] sm:text-[20px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap">
                 <strong>{formatDollar(totals?.total_income || 0)}</strong>
               </td>
-              <td className="px-6 py-3 mr-4 whitespace-nowrap">
+              <td className="text-[11px] sm:text-[20px]  px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap">
                 <strong>{formatDollar(totals?.total_expenses || 0)}</strong>
               </td>
-              <td className="px-6 py-3 mr-4 whitespace-nowrap">
+              <td className="text-[11px] sm:text-[20px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap">
                 <strong>{formatDollar(totals?.total_profit || 0)}</strong>
               </td>
-              <td className="px-6 py-3 mr-4 whitespace-nowrap">
+              <td className="text-[11px] sm:text-[20px]  px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap">
                 <strong>{totals?.total_margin_percentage || 0}</strong>
               </td>
             </tr>
@@ -111,8 +103,6 @@ export default function OverviewPage() {
             <tr>
               <td />
             </tr>
-
-            {/* TODO: finish the linking between the details page, and going to the specific transactions when the category is clicked */}
 
             {overviewData?.map((month) => (
               <tr
@@ -125,32 +115,30 @@ export default function OverviewPage() {
                 }
                 style={{ cursor: 'pointer' }}
               >
-                <td className="px-6 py-3 mr-4 whitespace-nowrap">
-                  {month.month_name}
-                </td>
-                <td className="px-6 py-3 mr-4 whitespace-nowrap">
+                <td className={tableClasses}>{month.month_name}</td>
+                <td className={tableClasses}>
                   {formatDollar(month.month_income)}
                 </td>
-                <td className="px-6 py-3 mr-4 whitespace-nowrap">
+                <td className={tableClasses}>
                   {formatDollar(month.month_expenses)}
                 </td>
 
                 {month.month_profit > 0 ? (
-                  <td className="px-6 py-3 mr-4 whitespace-nowrap text-green-600">
+                  <td className={`${tableClasses} text-green-600`}>
                     {formatDollar(month.month_profit)}
                   </td>
                 ) : (
-                  <td className="px-6 py-3 mr-4 whitespace-nowrap text-red-500">
+                  <td className={`${tableClasses} text-red-500`}>
                     {formatDollar(month.month_profit)}
                   </td>
                 )}
 
                 {month.month_profit > 0 ? (
-                  <td className="px-6 py-3 mr-4 whitespace-nowrap text-green-600">
+                  <td className={`${tableClasses} text-green-600`}>
                     {month.month_margin_percentage}
                   </td>
                 ) : (
-                  <td className="px-6 py-3 mr-4 whitespace-nowrap text-red-600">
+                  <td className={`${tableClasses} text-red-500`}>
                     {month.month_margin_percentage}
                   </td>
                 )}

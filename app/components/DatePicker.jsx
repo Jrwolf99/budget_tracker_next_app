@@ -34,10 +34,10 @@ function DatePicker({
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-wrap gap-4 text-black justify-center items-center">
+    <div className="text-[10px] sm:text-[15px] flex flex-wrap gap-1 text-black justify-center items-center">
       {justYear ? null : (
         <select
-          className="bg-white border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
           value={month}
           onChange={(e) => {
             setMonth(e.target.value);
@@ -56,7 +56,7 @@ function DatePicker({
         </select>
       )}
       <select
-        className="bg-white border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+        className="w-full bg-white border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
         value={year}
         onChange={(e) => {
           setYear(e.target.value);

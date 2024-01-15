@@ -2,6 +2,7 @@ import { ChevronDownIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import useResize from '../utility/useResize';
 
 const MyTable = ({ payload, colorScale, month, year }) => {
   const formatDollar = (dollarAmount) => {
@@ -143,6 +144,8 @@ const renderCustomizedLabel = ({
 };
 
 const PieChartComponent = ({ data, month, year }) => {
+  const { isSmallScreenAndUnder, setIsSmallScreenAndUnder } = useResize();
+
   const sortedData = data.sort((a, b) => b.percentage - a.percentage);
   const colorScale = [
     '#0C8111',
@@ -160,19 +163,22 @@ const PieChartComponent = ({ data, month, year }) => {
   ];
 
   return (
-    <div>
-      <PieChart width={400} height={400}>
+    <div className="">
+      <PieChart
+        width={isSmallScreenAndUnder ? 300 : 400}
+        height={isSmallScreenAndUnder ? 300 : 400}
+      >
         <Pie
           data={sortedData}
           dataKey="value"
           nameKey="label"
           cx="50%"
           cy="50%"
-          innerRadius={60}
-          outerRadius={90}
+          innerRadius={isSmallScreenAndUnder ? 40 : 60}
+          outerRadius={isSmallScreenAndUnder ? 60 : 90}
           label={renderCustomizedLabel}
           labelLine={false}
-          className="text-xs"
+          className="text-[8px] sm:text-[12px]"
         >
           {sortedData.map((entry, index) => (
             <Cell

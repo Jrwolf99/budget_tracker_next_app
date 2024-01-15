@@ -11,6 +11,7 @@ import { Slider } from '@/components/ui/slider';
 import CategoryCard from './CategoryCard';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import useResize from '../utility/useResize';
 
 const reportTypes = [
   {
@@ -88,18 +89,29 @@ export default function DetailsPage() {
     });
   }
 
+  const { isSmallScreenAndUnder } = useResize();
+
+  useEffect(() => {
+    if (isSmallScreenAndUnder) {
+      setviewOrganization(true);
+    }
+    if (!isSmallScreenAndUnder) {
+      setviewOrganization(false);
+    }
+  }, [isSmallScreenAndUnder]);
+
   return (
     <>
-      <CardContainer customClassNames="m-4">
-        <div className="flex justify-between items-center pr-8 mb-6">
-          <h2 className="font-bold">
+      <CardContainer customClassNames="m-4 flex justify-between items-center flex-col">
+        <div className="flex flex-wrap justify-between items-center pr-8 mb-6 w-full">
+          <h2 className="font-bold text-[10px] sm:text-[15px]">
             {monthIntToString(month)} {year} Expenses
           </h2>
-          <div className="flex justify-between items-center gap-4">
+          <div className="flex flex-wrap justify-between items-center gap-4">
             <Select
               id="long-value-select"
               instanceId="long-value-select"
-              className="text-xs flex-1 w-[130px]"
+              className="text-[10px] sm:text-[15px] flex-1 min-w-[130px] max-w-[140px]"
               options={onlyFilterOptions}
               onChange={(e) => {
                 setOnlyFilter(e?.value);
@@ -112,14 +124,6 @@ export default function DetailsPage() {
                 )?.label,
               }}
             />
-            <button
-              className="bg-primary text-white text-sm px-4 py-2 rounded-lg transition-all hover:bg-mainHover transform hover:scale-105"
-              onClick={() => {
-                setviewOrganization(!viewOrganization);
-              }}
-            >
-              {viewOrganization ? 'View by Cards' : 'View by List'}
-            </button>
             <DatePicker
               month={month}
               year={year}
@@ -137,8 +141,8 @@ export default function DetailsPage() {
             </button>
           </div>
         </div>
-        <div className="flex gap-8 justify-between items-start">
-          <div className="h-full bg-slate-100 border border-green-400 p-4 rounded-lg">
+        <div className="w-full flex flex-wrap md:flex-nowrap gap-8 justify-between items-start">
+          <div className="h-full mx-auto bg-slate-100 border border-green-400 p-4 rounded-lg">
             {totalsByCategory && (
               <PieChartComponent
                 data={totalsByCategory}
@@ -148,11 +152,11 @@ export default function DetailsPage() {
             )}
           </div>
           <div className="w-full">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-wrap justify-between items-center mb-4">
               <h3 className="font-bold mb-4">
                 {reportTypes[currentReportType].label} Report
               </h3>
-              <div className="w-[40%] h-[40px] flex justify-center items-center gap-4">
+              <div className="min-w-[300px] w-[40%] h-[40px] flex justify-center items-center gap-4">
                 <p>Specific</p>
                 <Slider
                   max={3}
