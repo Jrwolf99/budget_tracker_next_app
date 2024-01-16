@@ -12,16 +12,16 @@ export default function VerifyEmail() {
   const router = useRouter();
 
   useEffect(() => {
-    // authedGet(
-    //   `authentications/email_verification/show?sid=${searchParams.get('token')}`
-    // )
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     alert(res?.data?.message);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    authedGet(
+      `authentications/email_verification/show?sid=${searchParams.get('token')}`
+    )
+      .then((res) => {
+        console.log(res.data);
+        alert(res?.data?.message);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
