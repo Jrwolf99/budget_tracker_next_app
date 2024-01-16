@@ -34,6 +34,25 @@ const redirectToLogin = () => {
   }
 };
 
+
+export const fetchCurrentUser = async () => {
+  if (!isLoggedIn()) {
+    console.log('User is not logged in.');
+    return;
+  }
+
+  try {
+    const response = await authedGet('authentications/users/show');
+    return response.data;
+  } catch (err) {
+    console.error(err);
+
+    const errorMessage = err?.response?.data?.error || 'Unknown error';
+    console.log('Fetch current user failed, error:', errorMessage);
+    return err;
+  }
+};
+
 export function isLoggedIn() {
   return session_token() !== undefined && session_token() !== null;
 }

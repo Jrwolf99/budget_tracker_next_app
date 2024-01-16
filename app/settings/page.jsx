@@ -1,6 +1,6 @@
 'use client';
-import React, { useState } from 'react';
-import { authedPost } from '../utility/common';
+import React, { useEffect, useState } from 'react';
+import { authedPost, fetchCurrentUser } from '../utility/common';
 
 export default function Settings() {
   const handleResendVerificationEmail = () => {
@@ -17,10 +17,39 @@ export default function Settings() {
 
   const [email, setEmail] = useState('');
 
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    fetchCurrentUser().then((res) => setCurrentUser(res));
+  }, []);
+
   return (
-    <div className="flex flex-col w-full justify-start items-center h-screen bg-gray-200 pt-16">
-      <div className="bg-white p-8 rounded shadow-lg mt-8">
-        <h1 className="text-2xl font-semibold mb-4">
+    <div className="flex flex-col w-full justify-start items-center h-screen bg-gray-200 pt-16 text-[10px] sm:text-[15px]">
+      <div className="w-[90%] max-w-[800px] bg-white p-8 m-8 rounded shadow-lg">
+        <h2 className="text-xl font-semibold mb-4">User Information</h2>
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="font-medium mr-4">Email:</span>
+            <span className="text-gray-600">{currentUser?.email}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="font-medium mr-4">Verified:</span>
+            <span
+              className={`text-${currentUser?.verified ? 'green' : 'red'}-600`}
+            >
+              {currentUser?.verified ? 'Yes' : 'No'}
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="font-medium mr-4">Created At:</span>
+            <span className="text-gray-600">
+              {new Date(currentUser?.created_at).toLocaleDateString()}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-[90%] max-w-[800px] bg-white p-8 rounded shadow-lg mt-8 flex flex-col items-center">
+        <h1 className="text-xl font-semibold mb-4">
           Resend Verification Email
         </h1>
         <div className="mb-4">
@@ -33,12 +62,12 @@ export default function Settings() {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border rounded bg-gray-200"
+            className="w-full max-w-[400px] p-2 border rounded bg-gray-200"
           />
         </div>
-        <div className="min-w-[200px] flex flex-col justify-center gap-4 items-center">
+        <div className="flex flex-col justify-center gap-4 items-center">
           <button
-            className="w-full py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600 mb-2"
+            className="w-full  max-w-[400px]  py-2 px-4 bg-green-500 text-white rounded hover:bg-green-600 mb-2"
             onClick={handleResendVerificationEmail}
           >
             Resend Verification Email
