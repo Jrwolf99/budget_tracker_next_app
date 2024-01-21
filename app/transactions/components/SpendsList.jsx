@@ -78,6 +78,7 @@ const HeaderRow = ({
       {!isSmallScreenAndUnder && (
         <>
           <th className="px-4 py-2 min-w-[400px]">Description</th>
+          <th className="px-4 py-2 w-[100px]">Last Four</th>
           <th className="px-4 py-2 w-[150px]">Amount</th>
           <th className="px-4 py-2">Notes</th>
         </>
@@ -108,9 +109,7 @@ const HeaderRow = ({
       </th>
       {!isSmallScreenAndUnder && (
         <th className="px-4 py-2 w-[200px]">
-          <button className="flex-1" onClick={() => handleSort()}>
-            Date of Transaction
-          </button>
+          <div className="flex-1">Date of Transaction</div>
         </th>
       )}
     </tr>

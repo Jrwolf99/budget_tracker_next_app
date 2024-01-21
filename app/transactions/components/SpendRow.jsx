@@ -9,22 +9,28 @@ export default function SpendRow({
   isSmallScreenAndUnder,
 }) {
   const [notes, setNotes] = useState(spend.notes);
+  const [dateOfSpend, setDateOfSpend] = useState(spend.date_of_spend);
 
-  const [spendCategory, setSpendCategory] = useState(
-    spend.spend_category_identifier
-  );
+  const [spendCategory, setSpendCategory] = useState(spend.spend_category);
 
   const handleSaveNotes = () => {
-    authedPut('/spends/update_spend_notes', {
-      spend_id: spend.id,
+    authedPut('/spends/update', {
+      id: spend.id,
       notes: notes,
     });
   };
 
   const handleSaveSpendCategory = () => {
-    authedPut('/spends/update_spend_category', {
-      spend_id: spend.id,
-      spend_category: spendCategory,
+    authedPut('/spends/update', {
+      id: spend.id,
+      spend_category_id: spendCategory.id,
+    });
+  };
+
+  const handleUpdateDate = () => {
+    authedPut('/spends/update', {
+      id: spend.id,
+      date_of_spend: dateOfSpend,
     });
   };
 
@@ -59,6 +65,9 @@ export default function SpendRow({
       <td className="px-4 py-2 text-sm">
         <div>{spend.description}</div>
       </td>
+      <td className="px-4 py-2 text-sm">
+        <div>{spend.last_four}</div>
+      </td>
 
       <td className="px-4 py-2">
         <div>{spend.amount}</div>
@@ -83,7 +92,16 @@ export default function SpendRow({
         />
       </td>
 
-      <td className="px-4 py-2">{spend.date_of_spend}</td>
+      <td className="px-4 py-2">
+        <InputWithTimer
+          timerEndFunction={() => {
+            handleUpdateDate();
+          }}
+          value={dateOfSpend}
+          setValue={setDateOfSpend}
+          isDate
+        />
+      </td>
     </tr>
   );
 }

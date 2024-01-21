@@ -170,9 +170,9 @@ export function authedPostCSV(url, data, config = {}) {
     .then((res) => {
       if (res.status === 200 || res.status === 201) {
         alert('CSV upload successful');
-        const { created_count, duplicate_count } = res.data;
+        const { created_count, duplicate_count, locked_count } = res.data;
         alert(
-          `Created ${created_count} transactions, skipped ${duplicate_count} duplicates`
+          `Created ${created_count} transactions, skipped ${duplicate_count} duplicates, and skipped ${locked_count} locked spends.`
         );
       }
     })
