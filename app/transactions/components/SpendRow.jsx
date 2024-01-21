@@ -11,7 +11,10 @@ export default function SpendRow({
   const [notes, setNotes] = useState(spend.notes);
   const [dateOfSpend, setDateOfSpend] = useState(spend.date_of_spend);
 
-  const [spendCategory, setSpendCategory] = useState(spend.spend_category);
+  // TODO, Spend category is now broken. all you need to do now is figure out why the spend category is not updating when you switch it.
+  const [spendCategory, setSpendCategory] = useState(
+    spend?.spend_category?.identifier
+  );
 
   const handleSaveNotes = () => {
     authedPut('/spends/update', {
@@ -23,7 +26,9 @@ export default function SpendRow({
   const handleSaveSpendCategory = () => {
     authedPut('/spends/update', {
       id: spend.id,
-      spend_category_id: spendCategory.id,
+      spend_category: {
+        identifier: spendCategory,
+      },
     });
   };
 
