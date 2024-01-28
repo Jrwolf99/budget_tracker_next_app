@@ -1,13 +1,18 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Link from 'next/link';
 
-import { logout } from '../utility/common';
+import { fetchCurrentUser, logout } from '../utility/common';
 import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const pathName = usePathname();
+
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    fetchCurrentUser().then((res) => setCurrentUser(res));
+  }, []);
 
   if (
     pathName === '/login' ||
@@ -30,6 +35,16 @@ export default function Header() {
           </h1>
         </Link>
         <div className="ml-auto flex flex-wrap gap-4">
+          <div className="flex items-center gap-2 mr-4">
+            <p className="text-xs sm:text-lg font-semibold">
+              Hi,{' '}
+              {currentUser?.email === 'jrwolf99+guest@outlook.com'
+                ? 'Guest'
+                : currentUser?.email}
+              !
+            </p>
+          </div>
+
           <Link
             href="/settings"
             className="bg-mainHover hover:bg-black/30 transition transition-all
