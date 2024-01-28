@@ -2,7 +2,7 @@
 import useFormat from '@/app/utility/useFormat';
 import React, { useEffect, useState } from 'react';
 import DatePicker from '../components/DatePicker';
-import { authedGet } from '../utility/common';
+import { authedGet, fetchCurrentUser } from '../utility/common';
 import { currentUserId } from '../utility/localStorage';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import Tooltip from '../components/ToolTip';
@@ -53,10 +53,10 @@ export default function OverviewPage() {
   const tableClasses =
     'text-[7px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap';
 
-    const [currentUser, setCurrentUser] = useState(null);
-    useEffect(() => {
-      fetchCurrentUser().then((res) => setCurrentUser(res));
-    }, []);
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    fetchCurrentUser().then((res) => setCurrentUser(res));
+  }, []);
 
   if (overviewData.length == 0) {
     return (
@@ -75,12 +75,11 @@ export default function OverviewPage() {
             <h2 className="text-xl font-bold my-16">
               No data for the year, start spending!
               {currentUser &&
-                currentUser?.email ===
-                  'jrwolf99+guest@outlook.com'(
-                    <div className="text-sm mt-4">
-                      Head try heading 2023 for some sample data.
-                    </div>
-                  )}
+                currentUser?.email === 'jrwolf99+guest@outlook.com' && (
+                  <div className="text-sm mt-4">
+                    Try heading to 2023 for some sample data.
+                  </div>
+                )}
             </h2>
           </div>
         </CardContainer>
