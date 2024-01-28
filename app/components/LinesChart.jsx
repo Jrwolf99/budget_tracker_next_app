@@ -86,7 +86,12 @@ const CustomTooltip = ({ active, payload, label, labelOne, labelTwo }) => {
   return null;
 };
 
-const LinesChart = ({ graph_data, labelOne = null, labelTwo = null }) => {
+const LinesChart = ({
+  graph_data,
+  labelOne = null,
+  labelTwo = null,
+  color = '#4DBD3D',
+}) => {
   const { isExtraSmallScreenAndUnder } = useResize();
 
   return (
@@ -109,8 +114,8 @@ const LinesChart = ({ graph_data, labelOne = null, labelTwo = null }) => {
         <Line
           type="monotone"
           dataKey="value"
-          stroke="#4DBD3D"
-          dot={{ stroke: '#4DBD3D', strokeWidth: 2, fill: '#4DBD3D' }}
+          stroke={color}
+          dot={{ stroke: color, strokeWidth: 2, fill: color }}
           activeDot={{ r: 8 }}
           label={renderCustomizedDot}
         />

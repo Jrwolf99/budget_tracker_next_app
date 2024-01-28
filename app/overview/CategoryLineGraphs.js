@@ -50,6 +50,7 @@ export default function CategoryLineGraphs({
             graph_data={expenseData}
             labelOne="Expenses"
             labelTwo="Goal"
+            color="#bd3d3d"
           />
         </div>
       </div>
