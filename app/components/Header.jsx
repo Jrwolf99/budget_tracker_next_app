@@ -35,15 +35,17 @@ export default function Header() {
           </h1>
         </Link>
         <div className="ml-auto flex flex-wrap gap-4">
-          <div className="flex items-center gap-2 mr-4">
-            <p className="text-xs sm:text-lg font-semibold">
-              Hi,{' '}
-              {currentUser?.email === 'jrwolf99+guest@outlook.com'
-                ? 'Guest'
-                : currentUser?.email}
-              !
-            </p>
-          </div>
+          {currentUser && (
+            <div className="flex items-center gap-2 mr-4">
+              <p className="text-xs sm:text-lg font-semibold">
+                Hi,{' '}
+                {currentUser.email === 'jrwolf99+guest@outlook.com'
+                  ? 'Guest'
+                  : currentUser.email}
+                !
+              </p>
+            </div>
+          )}
 
           <Link
             href="/settings"
