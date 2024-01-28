@@ -73,6 +73,10 @@ export function login(email, password, router, isGuest = false) {
         const token = res.headers.get('X-Session-Token');
         createToken(token);
         setCurrentUserId(res.data.user_id);
+        if (isGuest) {
+          router.push('/overview?selected_identifier=all&year=2023');
+          return;
+        }
         router.push('/');
       }
     })
