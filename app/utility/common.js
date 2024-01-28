@@ -225,3 +225,11 @@ export function authedPut(url, data, config = {}) {
       }
     });
 }
+
+export function humanize(str) {
+  var frags = str.split('_');
+  for (var i = 0; i < frags.length; i++) {
+    frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+  }
+  return frags.join(' ');
+}

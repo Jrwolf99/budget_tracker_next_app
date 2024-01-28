@@ -46,7 +46,7 @@ export default function Header() {
         <ul className="flex space-x-4">
           <li>
             <Link
-              href="/overview"
+              href={`/overview?selected_identifier=all&year=${new Date().getFullYear()}`}
               className="text-gray-800 hover:text-mainHover"
             >
               Overview

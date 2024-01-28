@@ -14,13 +14,25 @@ export default function StatisticsBox({ totalSpent, totalEarned }) {
       <div className="flex flex-row gap-16">
         <div className="flex flex-col gap-1">
           <div className="text-sm text-gray-600">Total Spent Amount</div>
-          <div className="text-sm text-gray-600">Total Income</div>
+          {totalEarned > 0 && (
+            <div className="text-sm text-gray-600">Total Income</div>
+          )}
         </div>
         <div className="flex flex-col gap-1">
-          <div className="text-sm text-red-600">{formatDollar(totalSpent)}</div>
-          <div className="text-sm text-green-600">
-            {formatDollar(totalEarned)}
+          <div
+            className={`text-sm ${
+              totalEarned === 0
+                ? 'text-black font-bold text-xl'
+                : 'text-red-600'
+            }`}
+          >
+            {formatDollar(totalSpent)}
           </div>
+          {totalEarned > 0 && (
+            <div className="text-sm text-green-600">
+              {formatDollar(totalEarned)}
+            </div>
+          )}
         </div>
       </div>
     </CardContainer>

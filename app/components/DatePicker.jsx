@@ -1,6 +1,6 @@
 'use client';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function DatePicker({
   month,
@@ -33,12 +33,21 @@ function DatePicker({
   const router = useRouter();
   const pathname = usePathname();
 
+  useEffect(() => {
+    if (searchParams.get('month')) {
+      setMonth(searchParams.get('month'));
+    }
+    if (searchParams.get('year')) {
+      setYear(searchParams.get('year'));
+    }
+  }, []);
+
   return (
     <div className="text-[10px] sm:text-[15px] flex flex-wrap gap-1 text-black justify-center items-center">
       {justYear ? null : (
         <select
           className="w-full border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-          value={month}
+          value={searchParams.get('month') || month}
           onChange={(e) => {
             setMonth(e.target.value);
             const params = new URLSearchParams(searchParams);
@@ -57,7 +66,7 @@ function DatePicker({
       )}
       <select
         className="w-full bg-white border border-gray-300 rounded-md shadow-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
-        value={year}
+        value={searchParams.get('year') || year}
         onChange={(e) => {
           setYear(e.target.value);
           const params = new URLSearchParams(searchParams);
