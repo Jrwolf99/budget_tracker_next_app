@@ -3,7 +3,7 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: '/transactions?selected_identifier=all',
+        destination: `/overview?selected_identifier=all&year=${new Date().getFullYear()}`,
         permanent: true,
       },
     ];
