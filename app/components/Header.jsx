@@ -84,7 +84,7 @@ export default function Header() {
           </li>
           <li>
             <Link
-              href="/transactions?selected_identifier=all"
+              href="/transactions?selected_identifier=all&month=all"
               className="text-gray-800 hover:text-mainHover"
             >
               Transactions
