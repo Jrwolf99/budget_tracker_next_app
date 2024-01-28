@@ -29,6 +29,9 @@ export default function OverviewPage() {
   };
 
   useEffect(() => {
+    if (!year || !selectedIdentifier) {
+      return;
+    }
     const getOverview = () => {
       const response = authedGet('/spend_accounts/get_years_overview_report', {
         params: {
