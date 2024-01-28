@@ -50,16 +50,31 @@ export default function LoginPage() {
 
           <Link
             href="/register"
-            className="underline hover:text-blue-500 w-full m-auto"
+            className="underline hover:text-blue-500 w-full m-auto text-center"
           >
             Go to Register
           </Link>
+
           <Link
             href="/reset-password"
-            className="underline hover:text-blue-500 w-full m-auto"
+            className="underline hover:text-blue-500 w-full m-auto text-center"
           >
             Forgot password?
           </Link>
+
+          <button
+            onClick={() =>
+              login(
+                'jrwolf99+guest@outlook.com',
+                '?Y<gAUSo5=9V=3J![a(G',
+                router,
+                true
+              )
+            }
+            className="underline hover:text-blue-500 w-full text-center"
+          >
+            Log in as guest
+          </button>
         </div>
       </div>
     </div>

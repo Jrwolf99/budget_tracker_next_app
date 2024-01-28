@@ -57,13 +57,14 @@ export function isLoggedIn() {
   return session_token() !== undefined && session_token() !== null;
 }
 
-export function login(email, password, router) {
+export function login(email, password, router, isGuest = false) {
   axios
     .post(
       `${process.env.NEXT_PUBLIC_API_BASE_URL_DOMAIN}/api/v1/authentications/sign_in`,
       {
         email,
         password,
+        is_guest: isGuest,
       }
     )
     .then((res) => {
