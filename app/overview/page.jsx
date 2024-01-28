@@ -182,7 +182,9 @@ export default function OverviewPage() {
                 onClick={() => {
                   if (selectedIdentifier == 'all') {
                     router.push(
-                      `/details?month=${month.month_number}&year=${year}`
+                      `/details?month=${parseInt(
+                        month.month_number
+                      )}&year=${year}`
                     );
                   } else {
                     router.push(
