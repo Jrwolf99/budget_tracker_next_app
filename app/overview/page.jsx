@@ -67,7 +67,9 @@ export default function OverviewPage() {
             />
           </div>
           <div className="text-center mt-4">
-            <h2 className="text-xl font-bold">No data for the Year.</h2>
+            <h2 className="text-xl font-bold my-16">
+              No data for the year, start spending!
+            </h2>
           </div>
         </CardContainer>
       </div>

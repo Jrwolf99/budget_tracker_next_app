@@ -73,7 +73,7 @@ export function login(email, password, router, isGuest = false) {
         const token = res.headers.get('X-Session-Token');
         createToken(token);
         setCurrentUserId(res.data.user_id);
-        router.push('/transactions?selected_identifier=all');
+        router.push('/');
       }
     })
     .catch((err) => {

@@ -21,9 +21,14 @@ export default function Header() {
   return (
     <div>
       <header className="bg-main text-white py-6 px-8 shadow-md flex justify-between items-center">
-        <h1 className="text-xl sm:text-3xl font-semibold mr-4">
-          Budget Tracker
-        </h1>
+        <Link
+          href={`/overview?selected_identifier=all&year=${new Date().getFullYear()}`}
+          className="cursor-pointer flex items-center"
+        >
+          <h1 className="text-xl sm:text-3xl font-semibold mr-4">
+            Budget Tracker
+          </h1>
+        </Link>
         <div className="ml-auto flex flex-wrap gap-4">
           <Link
             href="/settings"
