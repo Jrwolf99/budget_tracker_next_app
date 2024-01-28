@@ -63,7 +63,7 @@ export default function CategoryLineGraphs({
             <LinesChart
               graph_data={profitData}
               labelOne="Actual Profit"
-              labelTwo="Goal/Expected Profit"
+              labelTwo="Expected Profit"
             />
           </div>
         </div>
