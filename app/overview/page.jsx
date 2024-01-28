@@ -53,6 +53,11 @@ export default function OverviewPage() {
   const tableClasses =
     'text-[7px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap';
 
+    const [currentUser, setCurrentUser] = useState(null);
+    useEffect(() => {
+      fetchCurrentUser().then((res) => setCurrentUser(res));
+    }, []);
+
   if (overviewData.length == 0) {
     return (
       <div className="flex flex-row flex-wrap justify-center items-start gap-4 p-1 pt-6 sm:p-6 bg-slate-200">
@@ -69,6 +74,13 @@ export default function OverviewPage() {
           <div className="text-center mt-4">
             <h2 className="text-xl font-bold my-16">
               No data for the year, start spending!
+              {currentUser &&
+                currentUser?.email ===
+                  'jrwolf99+guest@outlook.com'(
+                    <div className="text-sm mt-4">
+                      Head try heading 2023 for some sample data.
+                    </div>
+                  )}
             </h2>
           </div>
         </CardContainer>
