@@ -218,7 +218,13 @@ export default function OverviewPage() {
                 )}
 
                 <td className={`${tableClasses} text-end`}>
-                  <div className="pr-8">
+                  <div
+                    className={`text-end pr-8 ${
+                      month.month_expenses < month.month_expense_goals
+                        ? 'text-gray-500'
+                        : 'text-red-500'
+                    }`}
+                  >
                     {formatDollar(month.month_expenses)}
                     <br />
                     <span className="text-gray-500 text-[6px] sm:text-xs">
