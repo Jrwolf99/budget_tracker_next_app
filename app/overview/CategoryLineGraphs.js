@@ -18,16 +18,20 @@ export default function CategoryLineGraphs({
     value: Math.abs(month.month_income),
   }));
 
-  const profitData = overviewData.map((month) => ({
-    name: month.month_name.slice(0, 3),
-    value: (
-      Math.abs(month.month_income).toFixed(2) -
-      Math.abs(month.month_expenses).toFixed(2)
-    ).toFixed(2),
-    secondValue:
-      Math.abs(month.month_income).toFixed(2) -
-      Math.abs(month.month_expense_goals).toFixed(2),
-  }));
+  const profitMarginData = overviewData.map((month) => {
+    const income = Math.abs(month.month_income);
+    const expenses = Math.abs(month.month_expenses);
+    const expenseGoals = Math.abs(month.month_expense_goals);
+
+    const value = ((income - expenses) / income) * 100;
+    const secondValue = ((income - expenseGoals) / income) * 100;
+
+    return {
+      name: month.month_name.slice(0, 3),
+      value: value.toFixed(2),
+      secondValue: secondValue.toFixed(2),
+    };
+  });
 
   return (
     <CardContainer customClassNames="mb-[150px] w-[90vw] max-w-[1000px] mx-6">
@@ -62,9 +66,9 @@ export default function CategoryLineGraphs({
           </h1>
           <div className="w-full h-[400px]">
             <LinesChart
-              graph_data={profitData}
-              labelOne="Actual Profit"
-              labelTwo="Expected Profit"
+              graph_data={profitMarginData}
+              labelOne="Actual Profit Margin"
+              labelTwo="Goal Profit Margin"
             />
           </div>
         </div>
