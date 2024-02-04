@@ -165,7 +165,7 @@ export default function OverviewPage() {
                     {formatDollar(totals?.total_expenses || 0)}
                     <br />
                     <span className="text-gray-500 text-[6px] sm:text-xs pb-4">
-                      Goal: {formatDollar(totals?.total_expense_goals || 0)}
+                      Goal: {formatDollar(-totals?.total_expense_goals || 0)}
                     </span>
                   </strong>
                 </div>
@@ -222,7 +222,7 @@ export default function OverviewPage() {
                     {formatDollar(month.month_expenses)}
                     <br />
                     <span className="text-gray-500 text-[6px] sm:text-xs">
-                      Goal: {formatDollar(month.month_expense_goals)}
+                      Goal: {formatDollar(-month.month_expense_goals)}
                     </span>
                   </div>
                 </td>
