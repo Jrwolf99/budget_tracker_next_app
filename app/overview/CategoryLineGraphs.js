@@ -62,7 +62,7 @@ export default function CategoryLineGraphs({
       {selectedIdentifier === 'all' && (
         <div>
           <h1 className="text-2xl font-bold text-center text-gray-700 mb-4">
-            Profit
+            Profit Margin
           </h1>
           <div className="w-full h-[400px]">
             <LinesChart
