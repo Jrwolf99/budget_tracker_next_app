@@ -1,54 +1,53 @@
-import axios from 'axios';
-import { createToken, session_token, deleteAuth } from './cookies';
-import { setCurrentUserId } from './localStorage';
+import axios from "axios";
+import { createToken, session_token, deleteAuth } from "./cookies";
+import { setCurrentUserId } from "./localStorage";
 
 export const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 export const isInNoHeaderList = (pathname) => {
   const noHeaderList = [
-    '/login',
-    '/register',
-    '/verify-email',
-    '/reset-password',
+    "/login",
+    "/register",
+    "/verify-email",
+    "/reset-password",
   ];
   return noHeaderList.includes(pathname);
 };
 
 const redirectToLogin = () => {
-  const loginPath = '/login';
-  if (typeof window !== 'undefined' && window.location.pathname !== loginPath) {
+  const loginPath = "/login";
+  if (typeof window !== "undefined" && window.location.pathname !== loginPath) {
     window.location.href = loginPath;
   }
 };
 
-
 export const fetchCurrentUser = async () => {
   if (!isLoggedIn()) {
-    console.log('User is not logged in.');
+    console.log("User is not logged in.");
     return;
   }
 
   try {
-    const response = await authedGet('authentications/users/show');
+    const response = await authedGet("authentications/users/show");
     return response.data;
   } catch (err) {
     console.error(err);
 
-    const errorMessage = err?.response?.data?.error || 'Unknown error';
-    console.log('Fetch current user failed, error:', errorMessage);
+    const errorMessage = err?.response?.data?.error || "Unknown error";
+    console.log("Fetch current user failed, error:", errorMessage);
     return err;
   }
 };
@@ -69,15 +68,15 @@ export function login(email, password, router, isGuest = false) {
     )
     .then((res) => {
       if (res.status === 200 || res.status === 201) {
-        alert('Login successful');
-        const token = res.headers.get('X-Session-Token');
+        alert("Login successful");
+        const token = res.headers.get("X-Session-Token");
         createToken(token);
         setCurrentUserId(res.data.user_id);
         if (isGuest) {
-          router.push('/overview?selected_identifier=all&year=2023');
+          router.push("/overview?selected_identifier=all&year=2023");
           return;
         }
-        router.push('/');
+        router.push("/");
       }
     })
     .catch((err) => {
@@ -85,18 +84,18 @@ export function login(email, password, router, isGuest = false) {
       if (err?.response?.data) {
         console.log(JSON.stringify(err.response.data));
         alert(
-          'Login failed, error: ' + JSON.stringify(err.response.data.error)
+          "Login failed, error: " + JSON.stringify(err.response.data.error)
         );
       }
     });
 }
 
 export function logout() {
-  authedDelete('authentications/sign_out', {
+  authedDelete("authentications/sign_out", {
     params: { signed_id: session_token() },
   });
   deleteAuth();
-  window.location.href = '/';
+  window.location.href = "/";
 }
 
 const validateStatus = (status) => {
@@ -119,12 +118,12 @@ export function unauthedPost(url, data, config = {}) {
 }
 
 const authHeaders = () => ({
-  'Content-Type': 'application/json',
+  "Content-Type": "application/json",
   AUTHORIZATION: `Token ${session_token()}`,
 });
 
 const authHeadersCSV = () => ({
-  'Content-Type': 'multipart/form-data',
+  "Content-Type": "multipart/form-data",
   AUTHORIZATION: `Token ${session_token()}`,
 });
 
@@ -147,7 +146,7 @@ export function authedDelete(url, config = {}) {
     })
     .then((res) => {
       if (res.status === 200 || res.status === 201) {
-        alert('Delete successful');
+        alert("Delete successful");
       }
     })
     .catch((err) => {
@@ -155,7 +154,7 @@ export function authedDelete(url, config = {}) {
       if (err?.response?.data) {
         console.log(JSON.stringify(err.response.data));
         alert(
-          'Delete failed, error: ' + JSON.stringify(err.response.data.error)
+          "Delete failed, error: " + JSON.stringify(err.response.data.error)
         );
       }
     });
@@ -174,7 +173,7 @@ export function authedPostCSV(url, data, config = {}) {
     })
     .then((res) => {
       if (res.status === 200 || res.status === 201) {
-        alert('CSV upload successful');
+        alert("Upload Successful! 🎉");
         const { created_count, duplicate_count, locked_count } = res.data;
         alert(
           `Created ${created_count} transactions, skipped ${duplicate_count} duplicates, and skipped ${locked_count} locked spends.`
@@ -185,7 +184,7 @@ export function authedPostCSV(url, data, config = {}) {
       console.log(err);
       if (err?.response?.data) {
         console.log(JSON.stringify(err.response.data));
-        alert('Post failed, error: ' + JSON.stringify(err.response.data.error));
+        alert("Post failed, error: " + JSON.stringify(err.response.data.error));
       }
     });
 }
@@ -201,10 +200,6 @@ export function authedPost(url, data, config = {}) {
     ...config,
   });
 }
-
-
-
-
 
 export function authedPut(url, data, config = {}) {
   if (!isLoggedIn()) redirectToLogin();
@@ -226,15 +221,15 @@ export function authedPut(url, data, config = {}) {
       console.log(err);
       if (err?.response?.data) {
         console.log(JSON.stringify(err.response.data));
-        alert('Put failed, error: ' + JSON.stringify(err.response.data.error));
+        alert("Put failed, error: " + JSON.stringify(err.response.data.error));
       }
     });
 }
 
 export function humanize(str) {
-  var frags = str.split('_');
+  var frags = str.split("_");
   for (var i = 0; i < frags.length; i++) {
     frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
   }
-  return frags.join(' ');
+  return frags.join(" ");
 }
