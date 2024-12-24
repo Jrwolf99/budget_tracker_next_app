@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { authedPostCSV } from '@/app/utility/common';
-import { currentUserId } from '@/app/utility/localStorage';
-import CardContainer from '@/app/components/general/CardContainer';
+import React, { useState } from "react";
+import { authedPostCSV } from "@/app/utility/common";
+import { currentUserId } from "@/app/utility/localStorage";
+import CardContainer from "@/app/components/general/CardContainer";
 
-const UploadCSVBox = () => {
+const UploadBox = () => {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -12,7 +12,7 @@ const UploadCSVBox = () => {
   };
 
   const postCSV = (formData) => {
-    authedPostCSV('/spend_accounts/upload_spends_through_CSV', formData, {
+    authedPostCSV("/spend_accounts/upload_spends", formData, {
       params: {
         user_id: currentUserId(),
       },
@@ -22,7 +22,7 @@ const UploadCSVBox = () => {
   const handleUpload = () => {
     if (selectedFile) {
       const formData = new FormData();
-      formData.append('file', selectedFile);
+      formData.append("file", selectedFile);
       postCSV(formData);
     }
   };
@@ -34,12 +34,12 @@ const UploadCSVBox = () => {
           htmlFor="csvFile"
           className="text-sm font-semibold text-gray-600"
         >
-          Upload Bank Transaction CSV File
+          Upload QBO file
         </label>
         <input
           type="file"
           id="csvFile"
-          accept=".csv"
+          accept=".qbo"
           className="py-2 px-4 text-sm text-primaryText bg-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           onChange={handleFileChange}
         />
@@ -54,4 +54,4 @@ const UploadCSVBox = () => {
   );
 };
 
-export default UploadCSVBox;
+export default UploadBox;

@@ -1,22 +1,22 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import UploadCSVBox from './components/UploadCSVBox';
-import SpendsList from './components/SpendsList';
-import StatisticsBox from './components/StatisticsBox';
-import DatePickerBox from './components/DatePickerBox';
-import { useSearchParams } from 'next/navigation';
-import { authedGet } from '../utility/common';
-import { currentUserId } from '../utility/localStorage';
+"use client";
+import React, { useEffect, useState } from "react";
+import UploadBox from "./components/UploadBox";
+import SpendsList from "./components/SpendsList";
+import StatisticsBox from "./components/StatisticsBox";
+import DatePickerBox from "./components/DatePickerBox";
+import { useSearchParams } from "next/navigation";
+import { authedGet } from "../utility/common";
+import { currentUserId } from "../utility/localStorage";
 
 export default function TransactionsPage() {
   const searchParams = useSearchParams();
 
   const [month, setMonth] = useState(
-    searchParams.get('month') || 1 + new Date().getMonth()
+    searchParams.get("month") || 1 + new Date().getMonth()
   );
 
   const [year, setYear] = useState(
-    searchParams.get('year') || new Date().getFullYear().toString()
+    searchParams.get("year") || new Date().getFullYear().toString()
   );
 
   const [spends, setSpends] = useState([]);
@@ -24,11 +24,11 @@ export default function TransactionsPage() {
   const [totalEarned, setTotalEarned] = useState(0);
 
   useEffect(() => {
-    if (searchParams.get('selected_identifier') === null) return;
-    authedGet('/spend_accounts/show_spends', {
+    if (searchParams.get("selected_identifier") === null) return;
+    authedGet("/spend_accounts/show_spends", {
       params: {
         user_id: currentUserId(),
-        spend_category_identifier: searchParams.get('selected_identifier'),
+        spend_category_identifier: searchParams.get("selected_identifier"),
         month: month,
         year: year,
       },
@@ -47,7 +47,7 @@ export default function TransactionsPage() {
   return (
     <div className="flex flex-col gap-4 p-4 bg-slate-200">
       <div className="flex flex-row flex-wrap gap-4">
-        <UploadCSVBox />
+        <UploadBox />
         <StatisticsBox totalSpent={totalSpent} totalEarned={totalEarned} />
         <DatePickerBox
           month={month}
