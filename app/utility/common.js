@@ -160,7 +160,7 @@ export function authedDelete(url, config = {}) {
     });
 }
 
-export function authedPostCSV(url, data, config = {}) {
+export function authedPostDOC(url, data, setIsLoading, config = {}) {
   if (!isLoggedIn()) redirectToLogin();
   return axios
     .post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}`, data, {
@@ -186,6 +186,9 @@ export function authedPostCSV(url, data, config = {}) {
         console.log(JSON.stringify(err.response.data));
         alert("Post failed, error: " + JSON.stringify(err.response.data.error));
       }
+    })
+    .finally(() => {
+      setIsLoading(false);
     });
 }
 

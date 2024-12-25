@@ -1,18 +1,21 @@
-'use client';
-import useFormat from '@/app/utility/useFormat';
-import React, { useEffect, useState } from 'react';
-import DatePicker from '../components/DatePicker';
-import { authedGet, fetchCurrentUser } from '../utility/common';
-import { currentUserId } from '../utility/localStorage';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
-import Tooltip from '../components/ToolTip';
-import CardContainer from '../components/general/CardContainer';
-import { useRouter } from 'next/navigation';
-import CategoryLineGraphs from './CategoryLineGraphs';
-import SpendCategoryPicker from '../components/SpendCategoryPicker';
+"use client";
+import useFormat from "@/app/utility/useFormat";
+import React, { useEffect, useState } from "react";
+import DatePicker from "../components/DatePicker";
+import { authedGet, fetchCurrentUser } from "../utility/common";
+import { currentUserId } from "../utility/localStorage";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import Tooltip from "../components/ToolTip";
+import CardContainer from "../components/general/CardContainer";
+import { useRouter } from "next/navigation";
+import CategoryLineGraphs from "./CategoryLineGraphs";
+import SpendCategoryPicker from "../components/SpendCategoryPicker";
 
 // TODO: Add a spend_category_identifier to the backend endpoint
 // have the graphs show the category expenses for the year, as well as the month to month goals.
+
+// TODO: when uploading files, make a background job and add a loading spinner in place of the
+// upload button when the file is being processed.
 
 export default function OverviewPage() {
   const router = useRouter();
@@ -33,7 +36,7 @@ export default function OverviewPage() {
       return;
     }
     const getOverview = () => {
-      const response = authedGet('/spend_accounts/get_years_overview_report', {
+      const response = authedGet("/spend_accounts/get_years_overview_report", {
         params: {
           user_id: currentUserId(),
           year: year,
@@ -48,10 +51,10 @@ export default function OverviewPage() {
   }, [year, selectedIdentifier]);
 
   const headerClasses =
-    'text-[7px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider';
+    "text-[7px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider";
 
   const tableClasses =
-    'text-[7px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap';
+    "text-[7px] sm:text-[15px] px-2 py-1 mr-2 sm:px-6 sm:py-3 sm:mr-4 whitespace-nowrap";
 
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
@@ -75,7 +78,7 @@ export default function OverviewPage() {
             <h2 className="text-xl font-bold my-16">
               No data for the year, start spending!
               {currentUser &&
-                currentUser?.email === 'jrwolf99+guest@outlook.com' && (
+                currentUser?.email === "jrwolf99+guest@outlook.com" && (
                   <div className="text-sm mt-4">
                     Try heading to 2023 for some sample data.
                   </div>
@@ -88,7 +91,7 @@ export default function OverviewPage() {
   }
 
   const topRowClasses =
-    'text-[11px] sm:text-[20px] px-2 py-1 mr-2 sm:px-6 sm:mr-4 whitespace-nowrap align-top pt-3';
+    "text-[11px] sm:text-[20px] px-2 py-1 mr-2 sm:px-6 sm:mr-4 whitespace-nowrap align-top pt-3";
   return (
     <div className="flex flex-row flex-wrap justify-center items-start gap-4 p-1 pt-6 sm:p-6 bg-slate-200">
       <CardContainer customClassNames="mb-[10px] max-w-[1000px]">
@@ -107,7 +110,7 @@ export default function OverviewPage() {
               <th scope="col" className={headerClasses}>
                 Month
               </th>
-              {selectedIdentifier == 'all' && (
+              {selectedIdentifier == "all" && (
                 <th scope="col" className={headerClasses}>
                   Income
                 </th>
@@ -119,7 +122,7 @@ export default function OverviewPage() {
                 </div>
               </th>
 
-              {selectedIdentifier == 'all' && (
+              {selectedIdentifier == "all" && (
                 <th scope="col" className={headerClasses}>
                   <div className="flex items-center">
                     <div> Profit (What&apos;s left)</div>
@@ -130,7 +133,7 @@ export default function OverviewPage() {
                 </th>
               )}
 
-              {selectedIdentifier == 'all' && (
+              {selectedIdentifier == "all" && (
                 <th scope="col" className={`${headerClasses} text-center`}>
                   <div className="flex items-center">
                     <div>Profit Margin</div>
@@ -153,7 +156,7 @@ export default function OverviewPage() {
                 </button>
               </td>
 
-              {selectedIdentifier == 'all' && (
+              {selectedIdentifier == "all" && (
                 <td className={topRowClasses}>
                   <strong>{formatDollar(totals?.total_income || 0)}</strong>
                 </td>
@@ -171,13 +174,13 @@ export default function OverviewPage() {
                 </div>
               </td>
 
-              {selectedIdentifier == 'all' && (
+              {selectedIdentifier == "all" && (
                 <td className={topRowClasses}>
                   <strong>{formatDollar(totals?.total_profit || 0)}</strong>
                 </td>
               )}
 
-              {selectedIdentifier == 'all' && (
+              {selectedIdentifier == "all" && (
                 <td className={topRowClasses}>
                   <strong>{totals?.total_margin_percentage || 0}</strong>
                 </td>
@@ -193,7 +196,7 @@ export default function OverviewPage() {
                 key={month.key}
                 className="hover:bg-slate-200"
                 onClick={() => {
-                  if (selectedIdentifier == 'all') {
+                  if (selectedIdentifier == "all") {
                     router.push(
                       `/details?month=${parseInt(
                         month.month_number
@@ -207,11 +210,11 @@ export default function OverviewPage() {
                     );
                   }
                 }}
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
               >
                 <td className={tableClasses}>{month.month_name}</td>
 
-                {selectedIdentifier == 'all' && (
+                {selectedIdentifier == "all" && (
                   <td className={tableClasses}>
                     {formatDollar(month.month_income)}
                   </td>
@@ -221,8 +224,8 @@ export default function OverviewPage() {
                   <div
                     className={`text-end pr-8 ${
                       month.month_expenses < month.month_expense_goals
-                        ? 'text-gray-500'
-                        : 'text-red-500'
+                        ? "text-gray-500"
+                        : "text-red-500"
                     }`}
                   >
                     {formatDollar(month.month_expenses)}
@@ -233,9 +236,9 @@ export default function OverviewPage() {
                   </div>
                 </td>
 
-                {selectedIdentifier == 'all' && (
+                {selectedIdentifier == "all" && (
                   <>
-                    {' '}
+                    {" "}
                     {month.month_profit > 0 ? (
                       <td className={`${tableClasses} text-green-600`}>
                         {formatDollar(month.month_profit)}
@@ -248,9 +251,9 @@ export default function OverviewPage() {
                   </>
                 )}
 
-                {selectedIdentifier == 'all' && (
+                {selectedIdentifier == "all" && (
                   <>
-                    {' '}
+                    {" "}
                     {month.month_profit > 0 ? (
                       <td className={`${tableClasses} text-green-600`}>
                         {month.month_margin_percentage}
