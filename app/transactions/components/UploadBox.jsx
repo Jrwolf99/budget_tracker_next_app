@@ -22,6 +22,10 @@ const UploadBox = () => {
     });
   };
 
+  // TODO: Make sure you somehow come up with a way to handle the user closing the
+  // window before the upload is complete. This is bug where you could actually duplicate
+  // transactions if it does not fully upload.
+
   const handleUpload = () => {
     if (selectedFile) {
       setIsLoading(true);
@@ -38,7 +42,10 @@ const UploadBox = () => {
           <div className="text-center text-sm font-medium text-gray-700">
             <p className="mb-1">Uploading...</p>
             <p className="text-xs text-gray-500">
-              Large files could take a few minutes to load.
+              Large files could take a few minutes to load. Please do not close
+              the window. reuploading when it is still processing in the
+              background could result in duplicate transactions. Wait at least 5
+              minutes before reuploading.
             </p>
           </div>
           <div>
