@@ -1,14 +1,14 @@
-'use client';
-import React from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { login } from '../utility/common';
+"use client";
+import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { login } from "../utility/common";
 
 export default function LoginPage() {
   const router = useRouter();
 
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
   return (
     <div className="flex flex-col w-full justify-start items-center h-screen bg-gray-200 pt-16">
@@ -55,18 +55,18 @@ export default function LoginPage() {
             Go to Register
           </Link>
 
-          <Link
+          {/* <Link
             href="/reset-password"
             className="underline hover:text-blue-500 w-full m-auto text-center"
           >
             Forgot password?
-          </Link>
+          </Link> */}
 
           <button
             onClick={() =>
               login(
-                'jrwolf99+guest@outlook.com',
-                '?Y<gAUSo5=9V=3J![a(G',
+                "jrwolf99+guest@outlook.com",
+                "?Y<gAUSo5=9V=3J![a(G",
                 router,
                 true
               )
