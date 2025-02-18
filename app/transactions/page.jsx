@@ -7,6 +7,7 @@ import DatePickerBox from "./components/DatePickerBox";
 import { useSearchParams } from "next/navigation";
 import { authedGet } from "../utility/common";
 import { currentUserId } from "../utility/localStorage";
+import AIAssistantBox from "./components/AIAssistantBox";
 
 export default function TransactionsPage() {
   const searchParams = useSearchParams();
@@ -25,13 +26,11 @@ export default function TransactionsPage() {
 
   useEffect(() => {
     if (searchParams.get("selected_identifier") === null) return;
-    authedGet("/spend_accounts/show_spends", {
-      params: {
-        user_id: currentUserId(),
-        spend_category_identifier: searchParams.get("selected_identifier"),
-        month: month,
-        year: year,
-      },
+    authedGet("spends/index", {
+      user_id: currentUserId(),
+      spend_category_identifier: searchParams.get("selected_identifier"),
+      month: month,
+      year: year,
     })
       .then((response) => {
         console.log(response);
@@ -55,6 +54,9 @@ export default function TransactionsPage() {
           year={year}
           setYear={setYear}
         />
+        {month && year && month >= 1 && month <= 12 && (
+          <AIAssistantBox month={month} year={year} />
+        )}
       </div>
       <SpendsList spends={spends} />
     </div>

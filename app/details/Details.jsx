@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import PieChartComponent from '../components/PieChart';
-import { Slider } from '@/components/ui/slider';
-import CategoryCard from './CategoryCard';
-import { authedGet } from '../utility/common';
-import { currentUserId } from '../utility/localStorage';
-import useResize from '../utility/useResize';
-import Select from 'react-select';
+import React, { useEffect, useState } from "react";
+import PieChartComponent from "../components/PieChart";
+import { Slider } from "@/components/ui/slider";
+import CategoryCard from "./CategoryCard";
+import { authedGet } from "../utility/common";
+import { currentUserId } from "../utility/localStorage";
+import useResize from "../utility/useResize";
+import Select from "react-select";
 
 const onlyFilterOptions = [
-  { value: null, label: 'All' },
-  { value: 'only_needs', label: 'Only Needs' },
-  { value: 'only_wants', label: 'Only Wants' },
+  { value: null, label: "All" },
+  { value: "only_needs", label: "Only Needs" },
+  { value: "only_wants", label: "Only Wants" },
 ];
 
 const reportTypes = [
   {
-    identifier: 'granular',
-    label: 'Granular',
+    identifier: "granular",
+    label: "Granular",
   },
   {
-    identifier: 'broader',
-    label: 'Broader',
+    identifier: "broader",
+    label: "Broader",
   },
   {
-    identifier: 'wants_needs',
-    label: 'Wants and Needs',
+    identifier: "wants_needs",
+    label: "Wants and Needs",
   },
   {
-    identifier: 'aggregated',
-    label: 'Aggregated',
+    identifier: "aggregated",
+    label: "Aggregated",
   },
 ];
 
@@ -39,14 +39,12 @@ export default function Details({ month, year }) {
   const [onlyFilter, setOnlyFilter] = useState(null);
 
   useEffect(() => {
-    authedGet('/spend_accounts/get_totals_by_category_report', {
-      params: {
-        user_id: currentUserId(),
-        year: year,
-        month: month,
-        report_type: reportTypes[currentReportType].identifier,
-        only_needs_or_only_wants: onlyFilter,
-      },
+    authedGet("spends/totals_by_category_report", {
+      user_id: currentUserId(),
+      year: year,
+      month: month,
+      report_type: reportTypes[currentReportType].identifier,
+      only_needs_or_only_wants: onlyFilter,
     })
       .then((res) => {
         setTotalsByCategory((prev) => {
@@ -62,8 +60,8 @@ export default function Details({ month, year }) {
 
     return categories.slice().sort((a, b) => {
       if (
-        typeof a?.identifier === 'string' &&
-        typeof b?.identifier === 'string'
+        typeof a?.identifier === "string" &&
+        typeof b?.identifier === "string"
       ) {
         return a?.identifier.localeCompare(b?.identifier);
       }
@@ -130,13 +128,13 @@ export default function Details({ month, year }) {
         </div>
         <div
           className={`flex flex-wrap p-4 rounded-lg
-            ${viewOrganization ? 'flex-col' : 'flex-row'}
+            ${viewOrganization ? "flex-col" : "flex-row"}
             gap-4 justify-center items-center w-full`}
         >
           {sortByIdentifier(totalsByCategory).map((category, index) => (
             <div
               key={category.identifier}
-              className={`${viewOrganization ? 'w-full' : 'w-[300px]'}`}
+              className={`${viewOrganization ? "w-full" : "w-[300px]"}`}
             >
               <CategoryCard
                 category={category}
@@ -145,7 +143,7 @@ export default function Details({ month, year }) {
                 currentReportType={currentReportType}
                 reportTypes={reportTypes}
                 canHover={
-                  reportTypes[currentReportType].identifier === 'granular'
+                  reportTypes[currentReportType].identifier === "granular"
                 }
               />
             </div>

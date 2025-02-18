@@ -1,7 +1,8 @@
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
-import React, { useState, useEffect, useRef } from 'react';
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import React, { useState, useEffect, useRef } from "react";
 
 const InputWithTimer = ({
+  placeholder = "",
   timerEndFunction,
   value,
   setValue,
@@ -20,7 +21,7 @@ const InputWithTimer = ({
     if (timer) {
       clearTimeout(timer);
     }
-    if (value !== '' && value !== null) {
+    if (value !== "" && value !== null) {
       setTimer(
         setTimeout(() => {
           setSaved(true);
@@ -33,14 +34,15 @@ const InputWithTimer = ({
   return (
     <div className="flex flex-row justify-start items-center gap-1">
       <input
-        type={isDate ? 'date' : 'text'}
+        type={isDate ? "date" : "text"}
         className="border border-gray-400 rounded-md p-1 w-full"
-        value={value || ''}
+        value={value || ""}
+        placeholder={placeholder}
         onChange={(e) => setValue(e.target.value)}
       />
       <CheckCircleIcon
         className={`h-6 w-6 text-green-500 ${
-          saved ? 'opacity-100' : 'opacity-0'
+          saved ? "opacity-100" : "opacity-0"
         }`}
       />
     </div>

@@ -36,12 +36,10 @@ export default function OverviewPage() {
       return;
     }
     const getOverview = () => {
-      const response = authedGet("/spend_accounts/get_years_overview_report", {
-        params: {
-          user_id: currentUserId(),
-          year: year,
-          spend_category_identifier: selectedIdentifier,
-        },
+      const response = authedGet("spends/years_overview_report", {
+        user_id: currentUserId(),
+        year: year,
+        spend_category_identifier: selectedIdentifier,
       }).then((response) => {
         setOverviewData(response.data.months);
         setTotals(response.data.totals);

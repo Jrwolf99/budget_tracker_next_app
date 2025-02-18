@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import InputWithTimer from './utility/InputWithTimer';
-import { authedPut } from '@/app/utility/common';
-import SelectWithTimer from './utility/SelectWithTimer';
+import React, { useEffect, useState } from "react";
+import InputWithTimer from "./utility/InputWithTimer";
+import { authedPut } from "@/app/utility/common";
+import SelectWithTimer from "./utility/SelectWithTimer";
+import { currentUserId } from "@/app/utility/localStorage";
 
 export default function SpendRow({
   spend,
@@ -16,14 +17,17 @@ export default function SpendRow({
   );
 
   const handleSaveNotes = () => {
-    authedPut('/spends/update', {
+    authedPut("spends/update", {
+      user_id: currentUserId(),
       id: spend.id,
       notes: notes,
     });
   };
 
   const handleSaveSpendCategory = () => {
-    authedPut('/spends/update', {
+    console.log(spendCategory);
+    authedPut("spends/update", {
+      user_id: currentUserId(),
       id: spend.id,
       spend_category: {
         identifier: spendCategory,
@@ -32,7 +36,8 @@ export default function SpendRow({
   };
 
   const handleUpdateDate = () => {
-    authedPut('/spends/update', {
+    authedPut("spends/update", {
+      user_id: currentUserId(),
       id: spend.id,
       date_of_spend: dateOfSpend,
     });
@@ -46,7 +51,7 @@ export default function SpendRow({
       };
     })
     .filter((category) => {
-      return category.value !== 'uncategorized' && category.value !== 'all';
+      return category.value !== "uncategorized" && category.value !== "all";
     });
 
   if (isSmallScreenAndUnder) {

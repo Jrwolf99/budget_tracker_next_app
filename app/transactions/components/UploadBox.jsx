@@ -15,10 +15,8 @@ const UploadBox = () => {
   };
 
   const postDOC = (formData) => {
-    authedPostDOC("/spend_accounts/upload_spends", formData, setIsLoading, {
-      params: {
-        user_id: currentUserId(),
-      },
+    authedPostDOC("spends/upload_spends", formData, setIsLoading, {
+      user_id: currentUserId(),
     });
   };
 

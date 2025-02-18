@@ -92,7 +92,7 @@ export function login(email, password, router, isGuest = false) {
 
 export function logout() {
   authedDelete("authentications/sign_out", {
-    params: { signed_id: session_token() },
+    signed_id: session_token(),
   });
   deleteAuth();
   window.location.href = "/";
@@ -129,10 +129,12 @@ const authHeadersCSV = () => ({
 
 export function authedGet(url, config = {}) {
   if (!isLoggedIn()) redirectToLogin();
-  config.headers = authHeaders();
   return axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}`, {
     validateStatus,
-    ...config,
+    headers: authHeaders(),
+    params: {
+      ...config,
+    },
   });
 }
 
@@ -142,7 +144,9 @@ export function authedDelete(url, config = {}) {
     .delete(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}`, {
       headers: authHeaders(),
       validateStatus,
-      ...config,
+      params: {
+        ...config,
+      },
     })
     .then((res) => {
       if (res.status === 200 || res.status === 201) {
@@ -166,10 +170,11 @@ export function authedPostDOC(url, data, setIsLoading, config = {}) {
     .post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}`, data, {
       headers: {
         ...authHeadersCSV(),
-        ...config.headers,
       },
       validateStatus,
-      ...config,
+      params: {
+        ...config,
+      },
     })
     .then((res) => {
       if (res.status === 200 || res.status === 201) {
@@ -197,10 +202,11 @@ export function authedPost(url, data, config = {}) {
   return axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}`, data, {
     headers: {
       ...authHeaders(),
-      ...config.headers,
     },
     validateStatus,
-    ...config,
+    params: {
+      ...config,
+    },
   });
 }
 
@@ -210,10 +216,11 @@ export function authedPut(url, data, config = {}) {
     .put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${url}`, data, {
       headers: {
         ...authHeaders(),
-        ...config.headers,
       },
       validateStatus,
-      ...config,
+      params: {
+        ...config,
+      },
     })
     .then((res) => {
       if (res.status === 200 || res.status === 201) {

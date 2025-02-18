@@ -1,13 +1,13 @@
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import React, { useState, useEffect, useRef } from "react";
-import Select from "react-select";
 
-export default function SelectWithTimer({
+const NotesWithTimer = ({
+  placeholder = "",
+  classNames = "",
   timerEndFunction,
   value,
   setValue,
-  options,
-}) {
+}) => {
   const [timer, setTimer] = useState(null);
   const firstUpdate = useRef(true);
 
@@ -26,20 +26,24 @@ export default function SelectWithTimer({
         setTimeout(() => {
           setSaved(true);
           timerEndFunction();
-        }, 300)
+        }, 2000)
       );
     }
   }, [value]);
 
   return (
-    <div className="flex flex-row justify-start items-center gap-1 w-full max-w-[300px]">
-      <Select
-        options={options}
-        value={options.find((option) => option.value === value)}
-        onChange={(selectedOption) => {
-          setValue(selectedOption.value);
+    <div className="flex flex-row justify-start items-start gap-1">
+      <textarea
+        className={`border border-gray-400 rounded-md p-1 w-full ${classNames}`}
+        value={value || ""}
+        placeholder={placeholder}
+        onChange={(e) => {
+          if (firstUpdate.current === true) {
+            firstUpdate.current = false;
+            return;
+          }
+          setValue(e.target.value);
         }}
-        className="w-full"
       />
       <CheckCircleIcon
         className={`h-6 w-6 text-green-500 ${
@@ -48,4 +52,6 @@ export default function SelectWithTimer({
       />
     </div>
   );
-}
+};
+
+export default NotesWithTimer;
