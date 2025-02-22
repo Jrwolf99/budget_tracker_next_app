@@ -23,10 +23,6 @@ export default function SpendRow({
     setNotes(spend?.notes);
   }, [spend]);
 
-  console.log("--------------------------------");
-  console.log("spendCategory", spendCategory);
-  console.log("spend", spend?.spend_category?.identifier);
-
   const handleSaveNotes = () => {
     authedPut("spends/update", {
       user_id: currentUserId(),
