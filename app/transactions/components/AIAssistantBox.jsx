@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/dialog";
 import SelectWithTimer from "./utility/SelectWithTimer";
 import { useSpendCategories } from "@/app/hooks/useSpendCategories";
-
+import useFormat from "@/app/utility/useFormat";
 export default function AIAssistantBox({ month, year, fetchSpends }) {
+  const { monthIntToString } = useFormat();
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categorizedSpends, setCategorizedSpends] = useState(null);
@@ -82,8 +83,11 @@ export default function AIAssistantBox({ month, year, fetchSpends }) {
 
   return (
     <CardContainer customClassNames="flex-1 min-w-[300px] max-w-[400px]">
-      <div className="text-sm mb-4 font-semibold text-gray-600">
-        AI Assistant
+      <div className="flex flex-col gap-1 mb-4">
+        <div className="text-sm font-semibold text-gray-600">AI Assistant</div>
+        <div className="text-xs text-gray-500">
+          Only available for one month at a time.
+        </div>
       </div>
       <button
         type="button"
@@ -91,7 +95,9 @@ export default function AIAssistantBox({ month, year, fetchSpends }) {
         disabled={isLoading}
         className="py-2 px-4 text-sm text-white bg-primary rounded hover:bg-primary focus:outline-none transition-transform transform hover:translate-y-[-2px] hover:shadow-lg"
       >
-        {isLoading ? "Loading..." : "Ask AI To Categorize"}
+        {isLoading
+          ? "Loading..."
+          : `Ask AI To Categorize ${monthIntToString(month)} ${year}`}
       </button>
       <Dialog
         open={isModalOpen}
