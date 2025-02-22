@@ -13,6 +13,7 @@ export default function SpendsList({ spends }) {
   const router = useRouter();
   const pathname = usePathname();
   const [listOfCategories, setListOfCategories] = useState([]);
+  const [showNotes, setShowNotes] = useState(false);
 
   const { isSmallScreenAndUnder, isExtraSmallScreenAndUnder } = useResize();
 
@@ -27,6 +28,8 @@ export default function SpendsList({ spends }) {
             listOfCategories={listOfCategories}
             setListOfCategories={setListOfCategories}
             isSmallScreenAndUnder={isSmallScreenAndUnder}
+            showNotes={showNotes}
+            setShowNotes={setShowNotes}
           />
         </thead>
         <tbody>
@@ -37,6 +40,7 @@ export default function SpendsList({ spends }) {
                 spend={spend}
                 listOfCategories={listOfCategories}
                 isSmallScreenAndUnder={isSmallScreenAndUnder}
+                showNotes={showNotes}
               />
             );
           })}
@@ -53,6 +57,8 @@ const HeaderRow = ({
   listOfCategories,
   setListOfCategories,
   isSmallScreenAndUnder,
+  showNotes,
+  setShowNotes,
 }) => {
   useEffect(() => {
     authedGet("/spend_categories/show_spend_categories_all").then(
@@ -74,42 +80,50 @@ const HeaderRow = ({
   });
 
   return (
-    <tr>
+    <tr className="border-b border-gray-200">
       {!isSmallScreenAndUnder && (
         <>
-          <th className="px-4 py-2 min-w-[400px]">Description</th>
-          <th className="px-4 py-2 w-[100px]">Last Four</th>
-          <th className="px-4 py-2 w-[150px]">Amount</th>
-          <th className="px-4 py-2">Notes</th>
+          <th className="px-6 py-3 w-[30%]">Description</th>
+          <th className="px-6 py-3 w-[120px]">Last Four</th>
+          <th className="px-6 py-3 w-[150px]">Amount</th>
+          {showNotes && <th className="px-6 py-3 w-[20%]">Notes</th>}
         </>
       )}
-      <th className="px-4 py-2 flex gap-4 items-center">
-        <Select
-          id="long-value-select"
-          instanceId="long-value-select"
-          className="text-sm flex-1"
-          name="categories"
-          options={selectOptionsSpendCategory}
-          onChange={(e) => {
-            const params = new URLSearchParams(searchParams);
-            params.set("selected_identifier", e.value);
-            router.replace(`${pathname}?${params}`);
-          }}
-          value={
-            {
-              value: searchParams.get("selected_identifier"),
-              label: listOfCategories?.find(
-                (category) =>
-                  category.identifier ===
-                  searchParams.get("selected_identifier")
-              )?.name,
-            } || { value: "all", label: "All" }
-          }
-        />
+      <th className="px-6 py-3">
+        <div className="flex gap-4 items-center">
+          <Select
+            id="long-value-select"
+            instanceId="long-value-select"
+            className="text-sm w-[272px] -ml-2"
+            name="categories"
+            options={selectOptionsSpendCategory}
+            onChange={(e) => {
+              const params = new URLSearchParams(searchParams);
+              params.set("selected_identifier", e.value);
+              router.replace(`${pathname}?${params}`);
+            }}
+            value={
+              {
+                value: searchParams.get("selected_identifier"),
+                label: listOfCategories?.find(
+                  (category) =>
+                    category.identifier ===
+                    searchParams.get("selected_identifier")
+                )?.name,
+              } || { value: "all", label: "All" }
+            }
+          />
+          <button
+            onClick={() => setShowNotes(!showNotes)}
+            className="px-4 py-2 text-sm text-white bg-primary rounded hover:bg-primary focus:outline-none transition-transform transform hover:translate-y-[-2px] hover:shadow-lg whitespace-nowrap"
+          >
+            {showNotes ? "Hide Notes" : "Show Notes"}
+          </button>
+        </div>
       </th>
       {!isSmallScreenAndUnder && (
-        <th className="px-4 py-2 w-[200px]">
-          <div className="flex-1">Date of Transaction</div>
+        <th className="px-6 py-3 w-[180px]">
+          <div className="whitespace-nowrap">Date of Transaction</div>
         </th>
       )}
     </tr>

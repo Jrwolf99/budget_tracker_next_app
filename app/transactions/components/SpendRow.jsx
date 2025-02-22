@@ -8,6 +8,7 @@ export default function SpendRow({
   spend,
   listOfCategories,
   isSmallScreenAndUnder,
+  showNotes,
 }) {
   const [notes, setNotes] = useState(spend.notes);
   const [dateOfSpend, setDateOfSpend] = useState(spend.date_of_spend);
@@ -88,15 +89,17 @@ export default function SpendRow({
       <td className="px-4 py-2">
         <div>{spend.amount}</div>
       </td>
-      <td className="px-4 py-2">
-        <InputWithTimer
-          timerEndFunction={() => {
-            handleSaveNotes();
-          }}
-          value={notes}
-          setValue={setNotes}
-        />
-      </td>
+      {showNotes && (
+        <td className="px-4 py-2">
+          <InputWithTimer
+            timerEndFunction={() => {
+              handleSaveNotes();
+            }}
+            value={notes}
+            setValue={setNotes}
+          />
+        </td>
+      )}
       <td className="px-4 py-2 min-w-[220px]">
         <SelectWithTimer
           timerEndFunction={() => {
