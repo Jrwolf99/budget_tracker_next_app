@@ -9,12 +9,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import SelectWithTimer from "./utility/SelectWithTimer";
+import { useSpendCategories } from "@/app/hooks/useSpendCategories";
 
 export default function AIAssistantBox({ month, year, fetchSpends }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [categorizedSpends, setCategorizedSpends] = useState(null);
   const [currentSpendIndex, setCurrentSpendIndex] = useState(0);
+  const [isManualCategorize, setIsManualCategorize] = useState(false);
+  const { selectOptions: selectOptionsSpendCategory } = useSpendCategories({
+    justStandardExpenses: false,
+    noUncategorized: true,
+    noAll: true,
+  });
 
   const handleSaveSpendCategory = () => {
     authedPut("spends/update", {
@@ -60,6 +68,7 @@ export default function AIAssistantBox({ month, year, fetchSpends }) {
   const handleCloseModal = () => {
     console.log("closing modal");
     setIsModalOpen(false);
+    setIsManualCategorize(false);
     setCategorizedSpends(null);
     setCurrentSpendIndex(0);
     fetchSpends();
@@ -92,7 +101,7 @@ export default function AIAssistantBox({ month, year, fetchSpends }) {
           }
         }}
       >
-        <DialogContent className="max-h-[60vh] overflow-y-auto">
+        <DialogContent className="max-h-[90vh] h-[500px]overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               AI Assistant {currentSpendIndex + 1} /{" "}
@@ -107,28 +116,73 @@ export default function AIAssistantBox({ month, year, fetchSpends }) {
                     <div className="text-lg font-medium">
                       {categorizedSpends[currentSpendIndex].description}
                     </div>
-                    <div className="inline-flex items-center gap-2">
-                      <span className="text-sm text-gray-500">
-                        Suggested Category:
-                      </span>
-                      <span className="px-3 py-1 text-sm font-medium bg-primary/10 text-primary rounded-full">
-                        {categorizedSpends[currentSpendIndex].category}
-                      </span>
-                    </div>
-                    <div className="flex gap-3 mt-2">
+                    {!isManualCategorize && (
+                      <div className="inline-flex items-center gap-2">
+                        <span className="text-sm text-gray-500">
+                          Suggested Category:
+                        </span>
+                        <span className="px-3 py-1 text-sm font-medium bg-primary/10 text-primary rounded-full">
+                          {categorizedSpends[currentSpendIndex].category}
+                        </span>
+                      </div>
+                    )}
+
+                    {isManualCategorize && (
+                      <div className="flex flex-col gap-2">
+                        <SelectWithTimer
+                          timerEndFunction={() => {
+                            handleSaveSpendCategory();
+                          }}
+                          value={categorizedSpends[currentSpendIndex].category}
+                          setValue={(value) => {
+                            setCategorizedSpends(
+                              categorizedSpends.map((spend, index) =>
+                                index === currentSpendIndex
+                                  ? { ...spend, category: value }
+                                  : spend
+                              )
+                            );
+                          }}
+                          options={selectOptionsSpendCategory}
+                        />
+                      </div>
+                    )}
+                    {!isManualCategorize ? (
+                      <div className="flex gap-3 mt-2">
+                        <button
+                          onClick={handleAcceptSpend}
+                          className="flex-1 px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-colors"
+                        >
+                          Accept
+                        </button>
+                        <button
+                          onClick={handleIgnoreSpend}
+                          className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
+                        >
+                          Ignore
+                        </button>
+                      </div>
+                    ) : (
                       <button
-                        onClick={handleAcceptSpend}
-                        className="flex-1 px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-colors"
+                        onClick={() => {
+                          setCurrentSpendIndex(currentSpendIndex + 1);
+                          setIsManualCategorize(false);
+                        }}
+                        className="max-w-[300px] px-4 py-2 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary/90 transition-colors"
                       >
-                        Accept
+                        Next
                       </button>
-                      <button
-                        onClick={handleIgnoreSpend}
-                        className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
-                      >
-                        Ignore
-                      </button>
-                    </div>
+                    )}
+                    {!isManualCategorize && (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setIsManualCategorize(true)}
+                          className="underline text-xs text-gray-500"
+                        >
+                          Manual Categorize
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

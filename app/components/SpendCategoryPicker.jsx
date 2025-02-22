@@ -1,7 +1,8 @@
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import Select from 'react-select';
-import { authedGet } from '../utility/common';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
+import { authedGet } from "../utility/common";
+import { useSpendCategories } from "../hooks/useSpendCategories";
 
 export default function SpendCategoryPicker({
   selectedIdentifier,
@@ -9,42 +10,19 @@ export default function SpendCategoryPicker({
   justStandardExpenses = false,
   noUncategorized = false,
 }) {
-  const [listOfCategories, setListOfCategories] = useState([]);
+  const { listOfCategories, selectOptions: selectOptionsSpendCategory } =
+    useSpendCategories({
+      justStandardExpenses,
+      noUncategorized,
+    });
 
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    let endpoint = '/spend_categories/show_spend_categories_all';
-    if (justStandardExpenses)
-      endpoint = '/spend_categories/show_spend_categories_standard_expenses';
-    authedGet(endpoint).then((response) => {
-      setListOfCategories([
-        { identifier: 'all', name: 'All' },
-        ...(!noUncategorized
-          ? [
-              {
-                identifier: 'uncategorized',
-                name: 'Uncategorized',
-              },
-            ]
-          : []),
-        ...response.data,
-      ]);
-    });
-  }, [justStandardExpenses, noUncategorized]);
-
-  const selectOptionsSpendCategory = listOfCategories?.map((category) => {
-    return {
-      value: category.identifier,
-      label: category.name,
-    };
-  });
-
-  useEffect(() => {
-    if (searchParams.get('selected_identifier')) {
-      setSelectedIdentifier(searchParams.get('selected_identifier'));
+    if (searchParams.get("selected_identifier")) {
+      setSelectedIdentifier(searchParams.get("selected_identifier"));
     }
   }, []);
 
@@ -59,17 +37,17 @@ export default function SpendCategoryPicker({
         onChange={(e) => {
           setSelectedIdentifier(e.value);
           const params = new URLSearchParams(searchParams);
-          params.set('selected_identifier', e.value);
+          params.set("selected_identifier", e.value);
           router.replace(`${pathname}?${params}`);
         }}
         value={
           {
-            value: searchParams.get('selected_identifier'),
+            value: searchParams.get("selected_identifier"),
             label: listOfCategories?.find(
               (category) =>
-                category.identifier === searchParams.get('selected_identifier')
+                category.identifier === searchParams.get("selected_identifier")
             )?.name,
-          } || { value: 'all', label: 'All' }
+          } || { value: "all", label: "All" }
         }
       />
     </div>
