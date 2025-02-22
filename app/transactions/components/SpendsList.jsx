@@ -1,12 +1,12 @@
-'use client';
-import React, { useEffect } from 'react';
-import { useState } from 'react';
-import Select from 'react-select';
-import CardContainer from '@/app/components/general/CardContainer';
-import { authedGet } from '@/app/utility/common';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import SpendRow from './SpendRow';
-import useResize from '@/app/utility/useResize';
+"use client";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import Select from "react-select";
+import CardContainer from "@/app/components/general/CardContainer";
+import { authedGet } from "@/app/utility/common";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import SpendRow from "./SpendRow";
+import useResize from "@/app/utility/useResize";
 
 export default function SpendsList({ spends }) {
   const searchParams = useSearchParams();
@@ -55,11 +55,11 @@ const HeaderRow = ({
   isSmallScreenAndUnder,
 }) => {
   useEffect(() => {
-    authedGet('/spend_categories/show_spend_categories_all').then(
+    authedGet("/spend_categories/show_spend_categories_all").then(
       (response) => {
         setListOfCategories([
-          { identifier: 'all', name: 'All' },
-          { identifier: 'uncategorized', name: 'Uncategorized' },
+          { identifier: "all", name: "All" },
+          { identifier: "uncategorized", name: "Uncategorized" },
           ...response.data,
         ]);
       }
@@ -92,18 +92,18 @@ const HeaderRow = ({
           options={selectOptionsSpendCategory}
           onChange={(e) => {
             const params = new URLSearchParams(searchParams);
-            params.set('selected_identifier', e.value);
+            params.set("selected_identifier", e.value);
             router.replace(`${pathname}?${params}`);
           }}
           value={
             {
-              value: searchParams.get('selected_identifier'),
+              value: searchParams.get("selected_identifier"),
               label: listOfCategories?.find(
                 (category) =>
                   category.identifier ===
-                  searchParams.get('selected_identifier')
+                  searchParams.get("selected_identifier")
               )?.name,
-            } || { value: 'all', label: 'All' }
+            } || { value: "all", label: "All" }
           }
         />
       </th>

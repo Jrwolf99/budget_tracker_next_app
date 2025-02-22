@@ -16,6 +16,17 @@ export default function SpendRow({
     spend?.spend_category?.identifier
   );
 
+  // initialize the state
+  useEffect(() => {
+    setSpendCategory(spend?.spend_category?.identifier);
+    setDateOfSpend(spend?.date_of_spend);
+    setNotes(spend?.notes);
+  }, [spend]);
+
+  console.log("--------------------------------");
+  console.log("spendCategory", spendCategory);
+  console.log("spend", spend?.spend_category?.identifier);
+
   const handleSaveNotes = () => {
     authedPut("spends/update", {
       user_id: currentUserId(),

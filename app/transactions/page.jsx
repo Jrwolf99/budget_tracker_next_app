@@ -24,9 +24,9 @@ export default function TransactionsPage() {
   const [totalSpent, setTotalSpent] = useState(0);
   const [totalEarned, setTotalEarned] = useState(0);
 
-  useEffect(() => {
+  const fetchSpends = () => {
     if (searchParams.get("selected_identifier") === null) return;
-    authedGet("spends/index", {
+    return authedGet("spends/index", {
       user_id: currentUserId(),
       spend_category_identifier: searchParams.get("selected_identifier"),
       month: month,
@@ -41,6 +41,10 @@ export default function TransactionsPage() {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  useEffect(() => {
+    fetchSpends();
   }, [searchParams, month, year]);
 
   return (
@@ -55,7 +59,7 @@ export default function TransactionsPage() {
           setYear={setYear}
         />
         {month && year && month >= 1 && month <= 12 && (
-          <AIAssistantBox month={month} year={year} />
+          <AIAssistantBox month={month} year={year} fetchSpends={fetchSpends} />
         )}
       </div>
       <SpendsList spends={spends} />
