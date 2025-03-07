@@ -68,7 +68,6 @@ export function login(email, password, router, isGuest = false) {
     )
     .then((res) => {
       if (res.status === 200 || res.status === 201) {
-        alert("Login successful");
         const token = res.headers.get("X-Session-Token");
         createToken(token);
         setCurrentUserId(res.data.user_id);
