@@ -12,6 +12,8 @@ import {
 import SelectWithTimer from "./utility/SelectWithTimer";
 import { useSpendCategories } from "@/app/hooks/useSpendCategories";
 import useFormat from "@/app/utility/useFormat";
+import { ChevronLeftIcon } from "lucide-react";
+
 export default function AIAssistantBox({ month, year, fetchSpends }) {
   const { monthIntToString } = useFormat();
   const [isLoading, setIsLoading] = useState(false);
@@ -107,7 +109,7 @@ export default function AIAssistantBox({ month, year, fetchSpends }) {
           }
         }}
       >
-        <DialogContent className="max-h-[90vh] h-[500px]overflow-y-auto">
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               AI Assistant {currentSpendIndex + 1} /{" "}
@@ -119,6 +121,18 @@ export default function AIAssistantBox({ month, year, fetchSpends }) {
               <div className="text-sm text-gray-600">
                 {categorizedSpends[currentSpendIndex] && (
                   <div className="flex flex-col gap-4 p-4 border rounded-lg bg-gray-50">
+                    {currentSpendIndex > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCurrentSpendIndex(currentSpendIndex - 1);
+                        }}
+                        className="self-start flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                      >
+                        <ChevronLeftIcon className="w-4 h-4" />
+                        <span>Previous</span>
+                      </button>
+                    )}
                     <div className="text-lg font-medium">
                       {categorizedSpends[currentSpendIndex].description}
                     </div>
