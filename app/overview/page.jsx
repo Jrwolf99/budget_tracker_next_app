@@ -162,10 +162,24 @@ export default function OverviewPage() {
 
               <td className={topRowClasses}>
                 <div className="flex items-center text-end pr-8">
-                  <strong>
+                  <strong
+                    className={
+                      Math.abs(totals?.total_expenses || 0) <
+                      Math.abs(totals?.total_expense_goals || 0)
+                        ? "text-yellow-600"
+                        : "text-gray-900"
+                    }
+                  >
                     {formatDollar(totals?.total_expenses || 0)}
                     <br />
-                    <span className="text-gray-500 text-[6px] sm:text-xs pb-4">
+                    <span
+                      className={
+                        Math.abs(totals?.total_expenses || 0) <
+                        Math.abs(totals?.total_expense_goals || 0)
+                          ? "text-yellow-600 text-[6px] sm:text-xs pb-4"
+                          : "text-gray-500 text-[6px] sm:text-xs pb-4"
+                      }
+                    >
                       Goal: {formatDollar(-totals?.total_expense_goals || 0)}
                     </span>
                   </strong>
@@ -221,14 +235,22 @@ export default function OverviewPage() {
                 <td className={`${tableClasses} text-end`}>
                   <div
                     className={`text-end pr-8 ${
-                      month.month_expenses < month.month_expense_goals
-                        ? "text-gray-500"
-                        : "text-red-500"
+                      Math.abs(month.month_expenses) <
+                      Math.abs(month.month_expense_goals)
+                        ? "text-yellow-600"
+                        : "text-gray-900"
                     }`}
                   >
                     {formatDollar(month.month_expenses)}
                     <br />
-                    <span className="text-gray-500 text-[6px] sm:text-xs">
+                    <span
+                      className={`${
+                        Math.abs(month.month_expenses) <
+                        Math.abs(month.month_expense_goals)
+                          ? "text-yellow-600 text-[6px] sm:text-xs"
+                          : "text-gray-500 text-[6px] sm:text-xs"
+                      }`}
+                    >
                       Goal: {formatDollar(-month.month_expense_goals)}
                     </span>
                   </div>
